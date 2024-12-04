@@ -77,17 +77,17 @@ const logDeparture = (item) => {
   console.log(item.QID)
 };
 
-//const refresh = () => {
-//  console.log("Polling...");
-//  pickupStore.getTodaysPickups();
-//};
+const refresh = () => {
+  console.log("Polling...");
+  pickupStore.getTodaysPickups();
+};
 
-//onMounted(() => {
-//    polling = window.setInterval(refresh, 10000);
-//});
+onMounted(() => {
+    polling = window.setInterval(refresh, 10000);
+});
 
-//onUnmounted(() => {
-//  window.clearInterval(polling);
-//});
+onUnmounted(() => {
+  window.clearInterval(polling);
+});
 
 </script>
