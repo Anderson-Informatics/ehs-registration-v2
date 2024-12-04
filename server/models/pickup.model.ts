@@ -1,18 +1,12 @@
 import mongoose from "mongoose";
 
-const departureSchema = new mongoose.Schema(
-  { 
-    Date: String,
-    Time: String,
-    Timestamp: String,
-    PickedUp: Boolean,
-  },
-  { _id: false } // <-- disable `_id`
-);
-
 const schema: mongoose.Schema = new mongoose.Schema({
-  _id: mongoose.Types.ObjectId,
-  Departure: departureSchema,
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    auto: true,
+  },
+  Departure: mongoose.Schema.Types.Mixed,
   FirstName: String,
   LastName: String,
   PickupDate: String,

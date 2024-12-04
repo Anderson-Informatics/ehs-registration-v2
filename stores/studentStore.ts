@@ -24,29 +24,31 @@ export const useStudentStore = defineStore("student-store", {
         let data = await $fetch(`/api/students?CheckIn.Date=${today}`);
         this.registrations = data;
         return data;
-      } catch (e:any) {
+      } catch (e: any) {
         console.log(e.message);
       }
     },
     async checkInOne(checkInData: Object) {
       try {
-        let data = await $fetch('/api/students/checkInOne', {
+        let data = await $fetch("/api/students/checkInOne", {
           method: "POST",
           body: checkInData,
         });
-        return { message: `Check In Successful for ${checkInData.SubmissionID}`};
-      } catch (e:any) {
+        return {
+          message: `Check In Successful for ${checkInData.SubmissionID}`,
+        };
+      } catch (e: any) {
         console.log(e.message);
       }
     },
-    async addLabel(student:any) {
+    async addLabel(student: any) {
       try {
         let response = await $fetch("/api/submittable/add", {
           method: "POST",
           body: { ...student },
         });
         console.log(response);
-      } catch (e:any) {
+      } catch (e: any) {
         console.log(e.message);
       }
     },

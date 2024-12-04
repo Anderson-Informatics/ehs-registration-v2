@@ -31,24 +31,29 @@
     <span></span>
     <br />
     <br />
-    <h2>Find and Add Students to your Session</h2>
-    <div v-if='sessionStore.session.start.length > 0'>
-      <v-card>
-        <v-card-title>
-          <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
-            hide-details></v-text-field>
-        </v-card-title>
-        <v-data-table :headers="headers" :items="studentStore.registrations" :search="search">
-          <template v-slot:[`item.controls`]="props">
-            <v-btn class="mx-2" fab dark small color="green" @click="addStudent(props.item)">
-              <v-icon dark>mdi-account-plus</v-icon>
-            </v-btn>
-          </template>
-        </v-data-table>
-      </v-card>
+    <div v-if="sessionStore.session.end.length == 0">
+      <h2>Find and Add Students to your Session</h2>
+      <div v-if='sessionStore.session.start.length > 0'>
+        <v-card>
+          <v-card-title>
+            <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
+              hide-details></v-text-field>
+          </v-card-title>
+          <v-data-table :headers="headers" :items="studentStore.registrations" :search="search">
+            <template v-slot:[`item.controls`]="props">
+              <v-btn class="mx-2" fab dark small color="green" @click="addStudent(props.item)">
+                <v-icon dark>mdi-account-plus</v-icon>
+              </v-btn>
+            </template>
+          </v-data-table>
+        </v-card>
+      </div>
+      <div v-else>
+        <h4><em>You can add students once you have started testing.</em></h4>
+      </div>
     </div>
     <div v-else>
-      <h4><em>You can add students once you have started testing.</em></h4>
+      <h4><em>Testing session completed and closed.</em></h4>
     </div>
   </v-container>
 </template>
@@ -79,7 +84,7 @@ const headers = [
   { text: 'Add', value: 'controls', sortable: false },
 ];
 
-const addStudent = (item:any) => {
+const addStudent = (item: any) => {
   const payload = {
     sid: routeId,
     student: {
@@ -89,7 +94,7 @@ const addStudent = (item:any) => {
       LastName: item.LastName,
       LinkedID: item._id.$oid
     },
-    session: { 
+    session: {
       _id: sessionStore.session._id,
       proctor: sessionStore.session.proctor,
       room: sessionStore.session.room,
@@ -97,7 +102,7 @@ const addStudent = (item:any) => {
       start: sessionStore.session.start,
     }
   }
-  
+
   try {
     console.log(payload)
     sessionStore.addStudent(payload); // This will update the db
@@ -124,7 +129,7 @@ const endSession = () => {
   } else {
     return
   }
-  let ids = sessionStore.session.students.map(({SubmissionID}) => SubmissionID);
+  let ids = sessionStore.session.students.map(({ SubmissionID }) => SubmissionID);
   let now = new Date();
   const payload = {
     _id: routeId,
