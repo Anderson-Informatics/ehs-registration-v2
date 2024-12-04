@@ -12,5 +12,5 @@ const schema: mongoose.Schema = new mongoose.Schema({
   students: Array
 });
 
-// roster model
+// session model
 export default mongoose.model("Session", schema);

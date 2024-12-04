@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         { ...body }
     );
     return { message: "Proctor Session Successfully Added" };
-  } catch (e) {
+  } catch (e:any) {
     throw createError({
       message: e.message,
     });

@@ -1,13 +1,11 @@
 export const printIep = (item:any) => {
-    const labeltext = item.accommodations
+    const iep = item.IEP;
     const fname = item.FirstName;
     const lname = item.LastName;
-    const iep = item.IEP;
-    const accommodations = item.Accommodations;
-
-    console.log(accommodations)
-
+    
     if (iep == "Yes" || iep == "MLL") {
+        const accommodations = item.Accommodations;
+        const labeltext = item.accommodations;
         try {
             // open label
             var labelXml = '<?xml version="1.0" encoding="utf-8"?>\

@@ -110,7 +110,6 @@ const headers = [
 ];
 
 const checkIn = (item:any) => {
-  console.log(item._id.$oid)
   if (item.CheckIn.Registered) {
     let reRegister = confirm('This student appears to have already registered, are you sure would like to register this student?')
     if (reRegister) {
