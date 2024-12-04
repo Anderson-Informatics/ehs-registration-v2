@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 export const usePickupStore = defineStore("pickup-store", {
   state: () => ({
     pickups: [],
+    completed: [],
   }),
   actions: {
     async getAll() {
@@ -15,10 +16,21 @@ export const usePickupStore = defineStore("pickup-store", {
       }
     },
     async getTodaysPickups() {
-      const today = new Date().toDateString("en-US");
+      const today = new Date().toLocaleDateString("en-US");
       try {
-        let data = await $fetch(`/api/pickups?PickupDate=${today}`);
+        let data = await $fetch(`/api/pickups?PickupDate=${today}&Departure=.`);
         this.pickups = data;
+        return data;
+      } catch (e: any) {
+        console.log(e.message);
+      }
+    },
+    async getTodaysCompletedPickups() {
+      const today = new Date().toLocaleDateString("en-US");
+      const pickup = new Date().toDateString();
+      try {
+        let data = await $fetch(`/api/pickups?PickupDate=${today}&Departure.Date=${pickup}`);
+        this.completed = data;
         return data;
       } catch (e: any) {
         console.log(e.message);

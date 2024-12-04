@@ -5,7 +5,7 @@ export const printIep = (item:any) => {
     
     if (iep == "Yes" || iep == "MLL") {
         const accommodations = item.Accommodations;
-        const labeltext = item.accommodations;
+        const labeltext = item.Accommodations;
         try {
             // open label
             var labelXml = '<?xml version="1.0" encoding="utf-8"?>\
