@@ -12,8 +12,8 @@
           <v-simple-checkbox v-model="item.CheckIn.Registered" disabled></v-simple-checkbox>
         </template>
 -->
-        <template v-slot:item.controls="props">
-          <v-btn class="mx-2" fab dark small color="red" @click="logDeparture(props.item)">
+        <template v-slot:item.controls="{ item }">
+          <v-btn class="mx-2" fab dark small color="red" @click="logDeparture(item)">
             <v-icon dark>mdi-logout-variant</v-icon>
           </v-btn>
         </template>
@@ -73,11 +73,14 @@ const headersComplete = [
   { title: 'Parent Arrival Time', key: 'PickupTime' },
   { title: 'Time Out', key: 'Departure.Time' }
 ];
-
-const refresh = () => {
-  console.log("Polling...");
-  pickupStore.getTodaysPickups();
+const logDeparture = (item) => {
+  console.log(item.QID)
 };
+
+//const refresh = () => {
+//  console.log("Polling...");
+//  pickupStore.getTodaysPickups();
+//};
 
 //onMounted(() => {
 //    polling = window.setInterval(refresh, 10000);
