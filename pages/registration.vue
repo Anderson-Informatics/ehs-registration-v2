@@ -2,26 +2,32 @@
   <v-container>
     <v-card title="Registration" flat>
       <template v-slot:text>
-        <v-text-field
-          v-model="search"
-          label="Search (use least common name, NOT full name)"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          hide-details
-          single-line>
+        <v-text-field v-model="search" label="Search (use least common name, NOT full name)"
+          prepend-inner-icon="mdi-magnify" variant="outlined" hide-details single-line>
         </v-text-field>
       </template>
 
-      <v-data-table 
-        :headers="headers"
-        :items="studentStore.students"
-        :search="search"
-      >
+      <v-data-table :headers="headers" :items="studentStore.students" :search="search">
         <template v-slot:item.FirstName="{ item }">
           <span class="first-name">{{ item.FirstName }}</span>
         </template>
         <template v-slot:item.LastName="{ item }">
           <span class="last-name">{{ item.LastName }}</span>
+        </template>
+        <template v-slot:item.IEP="{ item }">
+          <div v-if="item.IEP === 'Yes'">
+            <v-chip color="warning" dark>
+              <span class="iep">{{ item.IEP }}</span>
+            </v-chip>
+          </div>
+          <div v-else-if="item.IEP === 'MLL'">
+            <v-chip color="primary" dark>
+              <span class="iep">{{ item.IEP }}</span>
+            </v-chip>
+          </div>
+          <div v-else>
+            <span class="iep">{{ item.IEP }}</span>
+          </div>
         </template>
         <template v-slot:item.SubmissionID="{ item }">
           <span class="submission-id">
@@ -41,40 +47,24 @@
         </template>
       </v-data-table>
     </v-card>
-    <v-snackbar
-    v-model="snackbar"
-    :timeout="timeout"
-    color="green"
-    top
-  >
-    {{registrant}}{{ text_success }}
+    <v-snackbar v-model="snackbar" :timeout="timeout" color="green" top>
+      {{ registrant }}{{ text_success }}
 
-    <template v-slot:actions>
-      <v-btn
-        color="white"
-        @click="snackbar = false"
-      >
-        Close
-      </v-btn>
-    </template>
-  </v-snackbar>
-  <v-snackbar
-    v-model="snackerror"
-    :timeout="timeout"
-    color="red"
-    top
-  >
-    {{ text_error }}
+      <template v-slot:actions>
+        <v-btn color="white" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar v-model="snackerror" :timeout="timeout" color="red" top>
+      {{ text_error }}
 
-    <template v-slot:actions>
-      <v-btn
-        color="white"
-        @click="snackerror = false"
-      >
-        Close
-      </v-btn>
-    </template>
-  </v-snackbar>
+      <template v-slot:actions>
+        <v-btn color="white" @click="snackerror = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -109,7 +99,7 @@ const headers = [
   { title: 'Register', key: 'controls', sortable: false }
 ];
 
-const checkIn = (item:any) => {
+const checkIn = (item: any) => {
   if (item.CheckIn.Registered) {
     let reRegister = confirm('This student appears to have already registered, are you sure would like to register this student?')
     if (reRegister) {
@@ -133,7 +123,7 @@ const checkIn = (item:any) => {
   try {
     studentStore.checkInOne(checkinData)
     const student = studentStore.students.filter(
-      (each:any) =>
+      (each: any) =>
         each.submissionIdUnique === item.submissionIdUnique
     )[0]
     console.log(student)
@@ -148,7 +138,7 @@ const checkIn = (item:any) => {
   }
 };
 
-const print = (item:any) => {
+const print = (item: any) => {
   if (rePrint) {
     printIep(item);
     printLabel(item);
