@@ -7,8 +7,8 @@ export const printIep = (item:any) => {
         const accommodations = item.Accommodations;
         const labeltext = item.Accommodations;
         try {
-            // open label
-            var labelXml = '<?xml version="1.0" encoding="utf-8"?>\
+        // open label
+        var labelXml = '<?xml version="1.0" encoding="utf-8"?>\
 <DieCutLabel Version="8.0" Units="twips" MediaType="Default">\
 <PaperOrientation>Portrait</PaperOrientation>\
 <Id>Small30334</Id>\
@@ -19,25 +19,24 @@ export const printIep = (item:any) => {
 </DrawCommands>\
 <ObjectInfo>\
 <TextObject>\
-<Name>TEXT</Name>\
+<Name>Text</Name>\
 <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
 <BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
 <LinkedObjectName />\
 <Rotation>Rotation0</Rotation>\
 <IsMirrored>False</IsMirrored>\
-<IsVariable>False</IsVariable>\
+<IsVariable>True</IsVariable>\
 <GroupID>-1</GroupID>\
 <IsOutlined>False</IsOutlined>\
 <HorizontalAlignment>Center</HorizontalAlignment>\
-<VerticalAlignment>Top</VerticalAlignment>\
-<TextFitMode>ShrinkToFit</TextFitMode>\
+<VerticalAlignment>Middle</VerticalAlignment>\
+<TextFitMode>AlwaysFit</TextFitMode>\
 <UseFullFontHeight>True</UseFullFontHeight>\
 <Verticalized>False</Verticalized>\
 <StyledText>\
     <Element>\
-        <String xml:space="preserve">Testing accommodations \
-for:\r\n\
-' + fname + ' ' + lname + '</String>\
+        <String xml:space="preserve">' + lname + ',\
+' + fname + '\n' + accommodations + '</String>\
         <Attributes>\
             <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
             <ForeColor Alpha="255" Red="0" Green="0" Blue="0" HueScale="100" />\
@@ -45,7 +44,7 @@ for:\r\n\
     </Element>\
 </StyledText>\
 </TextObject>\
-<Bounds X="183.000000000001" Y="168" Width="2880" Height="456.000000000001" />\
+<Bounds X="58" Y="86" Width="3123.77957447352" Height="1102" />\
 </ObjectInfo>\
 <ObjectInfo>\
 <ShapeObject Stroke="SolidLine">\
@@ -63,11 +62,11 @@ for:\r\n\
 <LineAlignment>Center</LineAlignment>\
 <FillColor Alpha="0" Red="255" Green="255" Blue="255" />\
 </ShapeObject>\
-<Bounds X="183" Y="672" Width="2880" Height="15" />\
+<Bounds X="183" Y="1290" Width="2880" Height="15" />\
 </ObjectInfo>\
 <ObjectInfo>\
 <TextObject>\
-<Name>TEXT_1</Name>\
+<Name>TEXT</Name>\
 <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
 <BackColor Alpha="0" Red="255" Green="255" Blue="255" />\
 <LinkedObjectName />\
@@ -83,7 +82,7 @@ for:\r\n\
 <Verticalized>False</Verticalized>\
 <StyledText>\
     <Element>\
-        <String xml:space="preserve">' + accommodations + '</String>\
+        <String xml:space="preserve">Power down all electronic devices before testing.</String>\
         <Attributes>\
             <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
             <ForeColor Alpha="255" Red="0" Green="0" Blue="0" HueScale="100" />\
@@ -91,7 +90,7 @@ for:\r\n\
     </Element>\
 </StyledText>\
 </TextObject>\
-<Bounds X="195" Y="711" Width="2832" Height="1002" />\
+<Bounds X="183" Y="1398" Width="2835" Height="255" />\
 </ObjectInfo>\
 </DieCutLabel>';
 
