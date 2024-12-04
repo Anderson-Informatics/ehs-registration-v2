@@ -79,12 +79,12 @@ const refresh = () => {
   pickupStore.getTodaysPickups();
 };
 
-onMounted(() => {
-    polling = window.setInterval(refresh, 10000);
-});
+//onMounted(() => {
+//    polling = window.setInterval(refresh, 10000);
+//});
 
-onUnmounted(() => {
-  window.clearInterval(polling);
-});
+//onUnmounted(() => {
+//  window.clearInterval(polling);
+//});
 
 </script>
