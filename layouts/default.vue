@@ -34,7 +34,7 @@
             </v-list-item>
           </v-list>
         </v-navigation-drawer>
-        <v-main style="min-height: 500px">
+        <v-main style="min-height: 100vh">
             <NuxtPage />
         </v-main>
       </v-layout>

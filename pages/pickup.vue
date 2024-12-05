@@ -36,6 +36,46 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <v-snackbar
+    v-model="snackbar"
+    :timeout="timeout"
+    color="green"
+    top
+  >
+    {{registrant}}{{ text_success }}
+
+    <template v-slot:actions>
+      <v-btn
+        color="white"
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
+  <v-snackbar
+    v-model="snackerror"
+    :timeout="timeout"
+    color="red"
+    top
+  >
+    {{ text_error }}
+
+    <template v-slot:actions>
+      <v-btn
+        color="white"
+        @click="snackerror = false"
+      >
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
+  <br/>
+  <br/>
+  <v-btn small to="/dismissal">
+    Dismissal Screen
+  </v-btn>
   </v-container>
 </template>
 
@@ -73,13 +113,38 @@ const headersComplete = [
   { title: 'Parent Arrival Time', key: 'PickupTime' },
   { title: 'Time Out', key: 'Departure.Time' }
 ];
-const logDeparture = (item) => {
-  console.log(item.QID)
+const logDeparture = (item:any) => {
+  const now = new Date();
+  const departureData = {
+    QID: item.QID,
+    FirstName: item.FirstName,
+    LastName: item.LastName,
+    Departure: {
+      Date: now.toDateString(),
+      Time: now.toLocaleTimeString(),
+      Timestamp: now,
+      PickedUp: true
+    }
+  }
+  try {
+    // Set single student item for pinia modification
+    const student = pickupStore.pickups.filter((each) => each.QID === item.QID)[0];
+    student.Departure = departureData.Departure; // Add the departure data to the student
+    pickupStore.checkOut(departureData); // Run the checkOut via the API
+    const registrant = item.FirstName + ' ' + item.LastName;
+    console.log(registrant + ' had been checked out and picked up.');
+    text_success.value = registrant + ' had been checked out and picked up.';
+    snackbar.value = true;
+  } catch (error:any) {
+    console.log(error);
+    return snackerror.value = true
+  }
 };
 
 const refresh = () => {
   console.log("Polling...");
   pickupStore.getTodaysPickups();
+  pickupStore.getTodaysCompletedPickups();
 };
 
 onMounted(() => {

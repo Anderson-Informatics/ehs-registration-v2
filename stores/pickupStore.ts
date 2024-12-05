@@ -36,5 +36,16 @@ export const usePickupStore = defineStore("pickup-store", {
         console.log(e.message);
       }
     },
+    async checkOut(payload: Object) {
+      try {
+        let data = await $fetch('/api/pickups/checkout', {
+          method: "POST",
+          body: payload
+        });
+        return data;
+      } catch (e: any) {
+        console.log(e.message);
+      }
+    }
   }
 });
