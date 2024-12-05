@@ -2,8 +2,8 @@
   <v-container>
     <v-card title='Pick Up Requests'>
       <v-spacer></v-spacer>
-      <v-text-field v-model="search" label="Search (use least common name, NOT full name)"
-        prepend-inner-icon="mdi-magnify" variant="outlined" hide-details single-line>
+      <v-text-field v-model="search" placeholder="Search (use least common name, NOT full name)"
+        prepend-inner-icon="mdi-magnify" variant="outlined" text hide-details single-line>
       </v-text-field>
       <v-data-table :headers="headers" :items="pickupStore.pickups" :search="search" :sort-by="['LastName']"
         :sort-desc="[false]" :itemsPerPage='-1'>

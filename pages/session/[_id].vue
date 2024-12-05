@@ -133,6 +133,7 @@ const endSession = () => {
   let now = new Date();
   const payload = {
     _id: routeId,
+    start: sessionStore.session.start,
     end: new Date().toLocaleTimeString(),
     CheckOut: {
       Date: now.toDateString(),

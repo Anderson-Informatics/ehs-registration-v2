@@ -78,9 +78,10 @@
           <template v-slot:text>
         <v-text-field
           v-model="search"
-          label="Search (use least common name, NOT full name)"
+          placeholder="Search (use least common name, NOT full name)"
           prepend-inner-icon="mdi-magnify"
           variant="outlined"
+          text
           hide-details
           single-line>
         </v-text-field>

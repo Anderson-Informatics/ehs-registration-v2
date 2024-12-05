@@ -9,6 +9,7 @@ const schema: mongoose.Schema = new mongoose.Schema({
   date: String,
   start: String,
   end: String,
+  duration: Number,
   students: Array
 });
 

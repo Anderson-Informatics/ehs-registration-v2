@@ -1,5 +1,6 @@
 <template>
     <v-app theme="dark">
+      <NuxtLoadingIndicator />
         <v-card>
       <v-layout>
         <v-navigation-drawer

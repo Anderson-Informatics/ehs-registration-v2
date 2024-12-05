@@ -6,6 +6,7 @@ export const useStudentStore = defineStore("student-store", {
     students: [],
     student: {},
     registrations: [],
+    summary: [],
   }),
   actions: {
     // Get all results from DB
@@ -50,6 +51,15 @@ export const useStudentStore = defineStore("student-store", {
         console.log(response);
       } catch (e: any) {
         console.log(e.message);
+      }
+    },
+    async getSummary() {
+      try {
+        let data = await $fetch('/api/summary');
+        this.summary = data
+        return data;
+      } catch (e:any) {
+        console.log(e.message)
       }
     },
   },
