@@ -5,26 +5,9 @@
       <v-layout>
         <v-navigation-drawer
           v-model="drawer"
-          :rail="rail"
-          permanent
-          @click="rail = false"
-        >
-          <v-list-item
-            prepend-avatar="/DPSCDLogoNoTagBlue.png"
-            title="EHS Registration"
-            nav
-          >
-            <template v-slot:append>
-              <v-btn
-                icon="mdi-chevron-left"
-                variant="text"
-                @click.stop="rail = !rail"
-              ></v-btn>
-            </template>
-          </v-list-item>
-  
-          <v-divider></v-divider>
-  
+          expand-on-hover
+          rail
+        >  
           <v-list density="compact" nav>
             <v-list-item v-for="item in items"
                 :prepend-icon="item.icon"
