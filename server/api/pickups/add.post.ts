@@ -1,3 +1,4 @@
+import { ConnectDB } from "~/utils/db";
 import PickupModel from "~~/server/models/pickup.model";
 
 export default defineEventHandler(async (event) => {
@@ -5,6 +6,7 @@ export default defineEventHandler(async (event) => {
   // Get data from body
   const body = await readBody(event);
   // Update a result
+  await ConnectDB();
   if (query.secret == '2389dsfERGGGH4w32wgfkl') {
     try {
       const res = await PickupModel.create(

@@ -1,9 +1,11 @@
 import SessionModel from "~~/server/models/session.model";
 import StudentModel from "~~/server/models/student.model";
 import PickupModel from "~~/server/models/pickup.model";
+import { ConnectDB } from "~/utils/db";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
+  await ConnectDB();
   const agg = [{
       '$project': {
         '_id': 0, 

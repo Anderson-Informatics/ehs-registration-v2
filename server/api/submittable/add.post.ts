@@ -24,10 +24,9 @@ export default defineEventHandler(async (event) => {
     );
 
     return { message: "HSPT label properly applied" };
-  } catch (e) {
+  } catch (e:any) {
     throw createError({
       message: e.message,
     });
-    return { message };
   }
 });
