@@ -1,17 +1,12 @@
 export default defineEventHandler(async (event) => {
   // Get data from body
   const body = await readBody(event);
-  console.log(
-    `Add API: HSPT Taken label for ${body.FirstName} ${body.LastName}`
-  );
-
   // Get the runtimeconfig SUBMITTABLE API KEY
   const SUBMITTABLE_API_KEY = useRuntimeConfig().SUBMITTABLE_API_KEY;
 
   // Update a result
   try {
-    console.log(SUBMITTABLE_API_KEY)
-    const labelId = '1b266c74-9e43-4a05-b580-2e707d17b961'
+    const labelId = '1b266c74-9e43-4a05-b580-2e707d17b961';
     const response = await $fetch(
       `https://submittable-api.submittable.com/v4/submissions/${body.submissionIdUnique}/labels/${labelId}`,
       {
@@ -20,13 +15,12 @@ export default defineEventHandler(async (event) => {
           Accept: "application/json",
           Authorization: `Basic ${SUBMITTABLE_API_KEY}`,
         },
+        simple: true,
       }
     );
-
     return { message: "HSPT label properly applied" };
-  } catch (e:any) {
-    throw createError({
-      message: e.message,
-    });
-  }
+  } catch (error:any) {
+    console.log(`${error.status} - ${error.data.messages[0]}`);
+    return { message: `${error.status} - ${error.data.messages[0]}` };
+  };
 });
