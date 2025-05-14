@@ -1,7 +1,7 @@
 <template>
   <v-app theme="dark">
     <v-main class="d-flex">
-        <NuxtPage />
+      <NuxtPage />
     </v-main>
   </v-app>
 </template>
@@ -10,8 +10,8 @@
 export default {
   data() {
     return {
-      title: 'DPSCD Examination High School Checkout'
-    }
-  }
-}
+      title: 'DPSCD Examination High School Checkout',
+    };
+  },
+};
 </script>

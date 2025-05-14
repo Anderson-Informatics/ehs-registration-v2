@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const usePickupStore = defineStore("pickup-store", {
+export const usePickupStore = defineStore('pickup-store', {
   state: () => ({
     pickups: [],
     completed: [],
@@ -8,7 +8,7 @@ export const usePickupStore = defineStore("pickup-store", {
   actions: {
     async getAll() {
       try {
-        let data = await $fetch("/api/pickups");
+        let data = await $fetch('/api/pickups');
         this.pickups = data;
         return data;
       } catch (e) {
@@ -16,7 +16,7 @@ export const usePickupStore = defineStore("pickup-store", {
       }
     },
     async getTodaysPickups() {
-      const today = new Date().toLocaleDateString("en-US");
+      const today = new Date().toLocaleDateString('en-US');
       try {
         let data = await $fetch(`/api/pickups?PickupDate=${today}&Departure=.`);
         this.pickups = data;
@@ -26,10 +26,12 @@ export const usePickupStore = defineStore("pickup-store", {
       }
     },
     async getTodaysCompletedPickups() {
-      const today = new Date().toLocaleDateString("en-US");
+      const today = new Date().toLocaleDateString('en-US');
       const pickup = new Date().toDateString();
       try {
-        let data = await $fetch(`/api/pickups?PickupDate=${today}&Departure.Date=${pickup}`);
+        let data = await $fetch(
+          `/api/pickups?PickupDate=${today}&Departure.Date=${pickup}`,
+        );
         this.completed = data;
         return data;
       } catch (e: any) {
@@ -39,13 +41,13 @@ export const usePickupStore = defineStore("pickup-store", {
     async checkOut(payload: Object) {
       try {
         let data = await $fetch('/api/pickups/checkout', {
-          method: "POST",
-          body: payload
+          method: 'POST',
+          body: payload,
         });
         return data;
       } catch (e: any) {
         console.log(e.message);
       }
-    }
-  }
+    },
+  },
 });

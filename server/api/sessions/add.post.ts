@@ -1,5 +1,5 @@
-import { ConnectDB } from "~/utils/db";
-import SessionModel from "~~/server/models/session.model";
+import { ConnectDB } from '~/utils/db';
+import SessionModel from '~~/server/models/session.model';
 
 export default defineEventHandler(async (event) => {
   // Get data from body
@@ -7,11 +7,9 @@ export default defineEventHandler(async (event) => {
   // Update a result
   await ConnectDB();
   try {
-    const res = await SessionModel.create(
-        { ...body }
-    );
-    return { message: "Proctor Session Successfully Added" };
-  } catch (e:any) {
+    const res = await SessionModel.create({ ...body });
+    return { message: 'Proctor Session Successfully Added' };
+  } catch (e: any) {
     throw createError({
       message: e.message,
     });

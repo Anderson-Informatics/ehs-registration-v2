@@ -1,4 +1,4 @@
-import type { ObjectId, Mixed } from "mongoose";
+import type { ObjectId, Mixed } from 'mongoose';
 
 export interface Student {
   _id: ObjectId;

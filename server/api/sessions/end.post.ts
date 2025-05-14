@@ -1,14 +1,14 @@
-import { ConnectDB } from "~/utils/db";
-import SessionModel from "~~/server/models/session.model";
-import StudentModel from "~~/server/models/student.model"
+import { ConnectDB } from '~/utils/db';
+import SessionModel from '~~/server/models/session.model';
+import StudentModel from '~~/server/models/student.model';
 
 export default defineEventHandler(async (event) => {
-  // Function to calculate 
+  // Function to calculate
   const durationCalc = (start, end) => {
-    const t1 = Date.parse(`2024-12-02 ${start}`, "yyyy-MM-dd HH:mm:ss a");
-    const t2 = Date.parse(`2024-12-02 ${end}`, "yyyy-MM-dd HH:mm:ss a");
+    const t1 = Date.parse(`2024-12-02 ${start}`, 'yyyy-MM-dd HH:mm:ss a');
+    const t2 = Date.parse(`2024-12-02 ${end}`, 'yyyy-MM-dd HH:mm:ss a');
     const hours = Math.floor(Math.abs((t2 - t1) / 3600000));
-    const min = Math.round((t2 - t1) / 1000 / 60 % 60);
+    const min = Math.round(((t2 - t1) / 1000 / 60) % 60);
     const time = Math.abs((t2 - t1) / 3600000);
 
     return time;
@@ -19,17 +19,22 @@ export default defineEventHandler(async (event) => {
   await ConnectDB();
   try {
     const res = await SessionModel.updateOne(
-        { _id: body._id },
-        { end: body.end, duration: durationCalc(body.start, body.end) }
+      { _id: body._id },
+      { end: body.end, duration: durationCalc(body.start, body.end) },
     );
-    const result = await StudentModel.updateMany({SubmissionID: { $in: body.students }}, { $set: { 
-      "TestSession.end": body.end,
-      "TestSession.duration": durationCalc(body.start, body.end),
-      "CheckOut": body.CheckOut
-    }});
-    console.log(result)
-    return { message: "Testing Session Successfully Ended" };
-  } catch (e:any) {
+    const result = await StudentModel.updateMany(
+      { SubmissionID: { $in: body.students } },
+      {
+        $set: {
+          'TestSession.end': body.end,
+          'TestSession.duration': durationCalc(body.start, body.end),
+          CheckOut: body.CheckOut,
+        },
+      },
+    );
+    console.log(result);
+    return { message: 'Testing Session Successfully Ended' };
+  } catch (e: any) {
     throw createError({
       message: e.message,
     });

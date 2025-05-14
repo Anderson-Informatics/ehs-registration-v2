@@ -1,21 +1,22 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
+import type { Student } from '~/types';
 
-export const useStudentStore = defineStore("student-store", {
+export const useStudentStore = defineStore('student-store', {
   state: () => ({
     // list all results
-    students: [],
+    students: [] as any[],
     student: {},
-    registrations: [],
-    summary: [],
+    registrations: [] as any[],
+    summary: [] as any[],
   }),
   actions: {
     // Get all results from DB
     async getAll() {
       try {
-        let data = await $fetch("/api/students");
+        let data = await $fetch('/api/students');
         this.students = data;
         return data;
-      } catch (e) {
+      } catch (e: any) {
         console.log(e.message);
       }
     },
@@ -29,10 +30,10 @@ export const useStudentStore = defineStore("student-store", {
         console.log(e.message);
       }
     },
-    async checkInOne(checkInData: Object) {
+    async checkInOne(checkInData: Student) {
       try {
-        let data = await $fetch("/api/students/checkInOne", {
-          method: "POST",
+        let data = await $fetch('/api/students/checkInOne', {
+          method: 'POST',
           body: checkInData,
         });
         return {
@@ -44,8 +45,8 @@ export const useStudentStore = defineStore("student-store", {
     },
     async addLabel(student: any) {
       try {
-        let response = await $fetch("/api/submittable/add", {
-          method: "POST",
+        let response = await $fetch('/api/submittable/add', {
+          method: 'POST',
           body: { ...student },
         });
         console.log(response);
@@ -56,10 +57,10 @@ export const useStudentStore = defineStore("student-store", {
     async getSummary() {
       try {
         let data = await $fetch('/api/summary');
-        this.summary = data
+        this.summary = data;
         return data;
-      } catch (e:any) {
-        console.log(e.message)
+      } catch (e: any) {
+        console.log(e.message);
       }
     },
   },

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const schema: mongoose.Schema = new mongoose.Schema({
   _id: {
@@ -18,4 +18,4 @@ const schema: mongoose.Schema = new mongoose.Schema({
 });
 
 // roster model
-export default mongoose.model("Pickup", schema);
+export default mongoose.model('Pickup', schema);

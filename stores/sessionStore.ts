@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useSessionStore = defineStore("session-store", {
+export const useSessionStore = defineStore('session-store', {
   state: () => ({
     // list all results
     sessions: [],
@@ -10,7 +10,7 @@ export const useSessionStore = defineStore("session-store", {
     // Get all results from DB
     async getAll() {
       try {
-        let data = await $fetch("/api/sessions");
+        let data = await $fetch('/api/sessions');
         this.sessions = data;
         return data;
       } catch (e: any) {
@@ -40,8 +40,8 @@ export const useSessionStore = defineStore("session-store", {
     },
     async addSession(payload: Object) {
       try {
-        await $fetch("/api/sessions/add", {
-          method: "POST",
+        await $fetch('/api/sessions/add', {
+          method: 'POST',
           body: payload,
         });
       } catch (e: any) {
@@ -60,22 +60,22 @@ export const useSessionStore = defineStore("session-store", {
     },
     async addStudent(payload: Object) {
       try {
-        let data = await $fetch("/api/sessions/register", {
-          method: "POST",
+        let data = await $fetch('/api/sessions/register', {
+          method: 'POST',
           body: payload,
         });
-        console.log("Added student", data);
+        console.log('Added student', data);
       } catch (e: any) {
         console.log(e.message);
       }
     },
     async endSession(payload: Object) {
       try {
-        let data = await $fetch("/api/sessions/end", {
-          method: "POST",
+        let data = await $fetch('/api/sessions/end', {
+          method: 'POST',
           body: payload,
         });
-        console.log("Ended session", data);
+        console.log('Ended session', data);
       } catch (e: any) {
         console.log(e.message);
       }

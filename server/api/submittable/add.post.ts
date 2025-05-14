@@ -10,17 +10,17 @@ export default defineEventHandler(async (event) => {
     const response = await $fetch(
       `https://submittable-api.submittable.com/v4/submissions/${body.submissionIdUnique}/labels/${labelId}`,
       {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          Accept: "application/json",
+          Accept: 'application/json',
           Authorization: `Basic ${SUBMITTABLE_API_KEY}`,
         },
         simple: true,
-      }
+      },
     );
-    return { message: "HSPT label properly applied" };
-  } catch (error:any) {
+    return { message: 'HSPT label properly applied' };
+  } catch (error: any) {
     console.log(`${error.status} - ${error.data.messages[0]}`);
     return { message: `${error.status} - ${error.data.messages[0]}` };
-  };
+  }
 });

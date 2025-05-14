@@ -1,0 +1,5 @@
+{
+  "editor.tabSize": 2,
+  "vue.splitEditors.icon": true,
+  "editor.formatOnSave": true
+}

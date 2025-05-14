@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const schema: mongoose.Schema = new mongoose.Schema({
   _id: String,
@@ -10,8 +10,8 @@ const schema: mongoose.Schema = new mongoose.Schema({
   start: String,
   end: String,
   duration: Number,
-  students: Array
+  students: Array,
 });
 
 // session model
-export default mongoose.model("Session", schema);
+export default mongoose.model('Session', schema);

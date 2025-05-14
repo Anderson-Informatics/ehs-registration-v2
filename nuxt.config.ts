@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
@@ -8,14 +8,14 @@ export default defineNuxtConfig({
     transpile: ['vuetify'],
   },
   nitro: {
-    plugins: ["~/server/plugins/mongodb.ts"],
+    plugins: ['~/server/plugins/mongodb.ts'],
   },
   modules: [
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }))
-      })
+        config.plugins.push(vuetify({ autoImport: true }));
+      });
     },
     '@nuxt/eslint',
     '@pinia/nuxt',
@@ -35,13 +35,9 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }
-      ],
-      script: [
-        { src: 'DYMO.Label.Framework.3.0.js' }
-      ],
+      link: [{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }],
+      script: [{ src: 'dymo.connect.framework.full.js' }],
+      //script: [{ src: 'DYMO.Label.Framework.3.0.js' }],
     },
-  }
-  
-})
+  },
+});

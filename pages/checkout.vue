@@ -1,3 +1,3 @@
 <template>
-    <v-container>Checkout page</v-container>
+  <v-container>Checkout page</v-container>
 </template>

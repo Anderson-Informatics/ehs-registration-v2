@@ -1,5 +1,5 @@
-import { ConnectDB } from "~/utils/db";
-import StudentModel from "~~/server/models/student.model";
+import { ConnectDB } from '~/utils/db';
+import StudentModel from '~~/server/models/student.model';
 
 export default defineEventHandler(async (event) => {
   // Get data from body
@@ -8,11 +8,11 @@ export default defineEventHandler(async (event) => {
   await ConnectDB();
   try {
     const res = await StudentModel.updateOne(
-        { submissionIdUnique: body.submissionIdUnique },
-        { CheckIn: body.CheckIn }
+      { submissionIdUnique: body.submissionIdUnique },
+      { CheckIn: body.CheckIn },
     );
-    return { message: "Check In Successfully Completed" };
-  } catch (e:any) {
+    return { message: 'Check In Successfully Completed' };
+  } catch (e: any) {
     throw createError({
       message: e.message,
     });

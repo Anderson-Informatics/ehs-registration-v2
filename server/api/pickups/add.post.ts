@@ -1,5 +1,5 @@
-import { ConnectDB } from "~/utils/db";
-import PickupModel from "~~/server/models/pickup.model";
+import { ConnectDB } from '~/utils/db';
+import PickupModel from '~~/server/models/pickup.model';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
@@ -9,17 +9,14 @@ export default defineEventHandler(async (event) => {
   await ConnectDB();
   if (query.secret == '2389dsfERGGGH4w32wgfkl') {
     try {
-      const res = await PickupModel.create(
-          { ...body }
-      );
-      return { message: "Pickup successfully requested" };
-    } catch (e:any) {
+      const res = await PickupModel.create({ ...body });
+      return { message: 'Pickup successfully requested' };
+    } catch (e: any) {
       throw createError({
         message: e.message,
       });
     }
   } else {
-    return { message: "Secret not provided, pickup not recorded"}
+    return { message: 'Secret not provided, pickup not recorded' };
   }
-  
 });

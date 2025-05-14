@@ -1,9 +1,9 @@
 // utils/db.ts
 
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 declare global {
-  var cachedConnection: typeof  mongoose | null;
+  var cachedConnection: typeof mongoose | null;
 }
 
 let cachedConnection = globalThis.cachedConnection;
@@ -13,7 +13,7 @@ if (!cachedConnection) {
 
 const uri = useRuntimeConfig().MONGO_URI;
 mongoose.Promise = global.Promise;
-mongoose.set("strictQuery", false);
+mongoose.set('strictQuery', false);
 
 export async function ConnectDB() {
   if (cachedConnection) {
@@ -32,21 +32,21 @@ export async function ConnectDB() {
   let attempt = 0;
   const maxAttempts = 2;
 
-  while(attempt < maxAttempts) {
+  while (attempt < maxAttempts) {
     try {
       cachedConnection = await connect();
       global.cachedConnection = cachedConnection;
-      console.log("Database connection successful");
+      console.log('Database connection successful');
       return cachedConnection;
     } catch (error) {
       attempt += 1;
       console.error(`Database connection attempt ${attempt} failed:`, error);
 
       if (attempt >= maxAttempts) {
-        console.error("All database connection attempts failed");
+        console.error('All database connection attempts failed');
         throw error;
       } else {
-        console.log("Retrying database connection...");
+        console.log('Retrying database connection...');
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     }

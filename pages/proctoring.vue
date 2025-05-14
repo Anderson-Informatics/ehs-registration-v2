@@ -56,9 +56,7 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" @click="close">
-                  Cancel
-                </v-btn>
+                <v-btn color="blue darken-1" @click="close"> Cancel </v-btn>
                 <v-btn color="blue darken-1" @click="save(newItem)">
                   Save
                 </v-btn>
@@ -75,22 +73,23 @@
     </v-data-table>
     <div>
       <v-card title="Registered Students" flat>
-          <template v-slot:text>
-        <v-text-field
-          v-model="search"
-          placeholder="Search (use least common name, NOT full name)"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          text
-          hide-details
-          single-line>
-        </v-text-field>
-      </template>
+        <template v-slot:text>
+          <v-text-field
+            v-model="search"
+            placeholder="Search (use least common name, NOT full name)"
+            prepend-inner-icon="mdi-magnify"
+            variant="outlined"
+            text
+            hide-details
+            single-line
+          >
+          </v-text-field>
+        </template>
         <v-data-table
+          item-key="_id.$oid"
           :headers="headers2"
           :items="studentStore.registrations"
           :search="search"
-          item-key="_id.$oid"
         >
           <template v-slot:[`item.IEP`]="props">
             <div v-if="props.item.IEP === 'Yes'">
@@ -116,80 +115,87 @@
 
 <script setup lang="ts">
 const studentStore = useStudentStore();
-await useAsyncData('registrations', () => studentStore.getTodaysRegistrations(), {});
+await useAsyncData(
+  'registrations',
+  () => studentStore.getTodaysRegistrations(),
+  {},
+);
 const sessionStore = useSessionStore();
 await useAsyncData('sessions', () => sessionStore.getTodaysSessions(), {});
 
-const search = ref("");
+const search = ref('');
 const dialog = ref(false);
-const wings = ["A", "B", "C", "D"];
+const wings = ['A', 'B', 'C', 'D'];
 const headers = [
-    {
-    title: "Proctor Name",
-    align: "start",
+  {
+    title: 'Proctor Name',
+    align: 'start',
     sortable: false,
-    key: "proctor",
-    },
-    { title: "Room #", key: "room" },
-    { title: "Wing", key: "wing" },
-    { title: "Start Time", key: "start" },
-    { title: "End Time", key: "end" },
-    { title: "Proctor Phone", key: "phone" },
+    key: 'proctor',
+  },
+  { title: 'Room #', key: 'room' },
+  { title: 'Wing', key: 'wing' },
+  { title: 'Start Time', key: 'start' },
+  { title: 'End Time', key: 'end' },
+  { title: 'Proctor Phone', key: 'phone' },
 ];
 const headers2 = [
-    {
-    title: "Name",
-    align: "start",
+  {
+    title: 'Name',
+    align: 'start',
     sortable: false,
-    key: "FullName",
-    },
-    { title: "IEP", key: "IEP" },
-    { title: "First", key: "FirstName" },
-    { title: "Last", key: "LastName" },
-    { title: "Room", key: "TestSession.room" },
-    { title: "Wing", key: "TestSession.wing" },
-    { title: "Proctor", key: "TestSession.proctor" },
-    //{ title: "ID", key: "SubmissionID" },
-    { title: "Registration Time", key: "CheckIn.Time" },
+    key: 'FullName',
+  },
+  { title: 'IEP', key: 'IEP' },
+  { title: 'First', key: 'FirstName' },
+  { title: 'Last', key: 'LastName' },
+  { title: 'Room', key: 'TestSession.room' },
+  { title: 'Wing', key: 'TestSession.wing' },
+  { title: 'Proctor', key: 'TestSession.proctor' },
+  //{ title: "ID", key: "SubmissionID" },
+  { title: 'Registration Time', key: 'CheckIn.Time' },
 ];
 const newItem = ref({
-    _id: crypto.randomUUID(),
-    proctor: "",
-    phone: "",
-    room: "",
-    wing: "",
-    date: new Date().toDateString(),
-    start: "",
-    end: "",
-    students: [],
+  _id: crypto.randomUUID(),
+  proctor: '',
+  phone: '',
+  room: '',
+  wing: '',
+  date: new Date().toDateString(),
+  start: '',
+  end: '',
+  students: [],
 });
 
 const close = () => {
-    dialog.value = false;
-    nextTick(() => {
-        newItem.value = Object.assign({}, {
-          _id: crypto.randomUUID(),
-          proctor: "",
-          phone: "",
-          room: "",
-          wing: "",
-          date: new Date().toDateString(),
-          start: "",
-          end: "",
-          students: [],
-      });
-    });
+  dialog.value = false;
+  nextTick(() => {
+    newItem.value = Object.assign(
+      {},
+      {
+        _id: crypto.randomUUID(),
+        proctor: '',
+        phone: '',
+        room: '',
+        wing: '',
+        date: new Date().toDateString(),
+        start: '',
+        end: '',
+        students: [],
+      },
+    );
+  });
 };
 
-const save = (payload) => {
-      try {
-        console.log(payload);
-        // Need to add this endpoint and to sessionStore
-        sessionStore.addSession(payload);
-        sessionStore.sessions.push(payload);
-      } catch (error) {
-        console.log(error);
-      }
-      close();
-    }
+const save = (payload: Object) => {
+  try {
+    console.log(payload);
+    // Need to add this endpoint and to sessionStore
+    sessionStore.addSession(payload);
+    sessionStore.sessions.push(payload);
+  } catch (error) {
+    console.log(error);
+  }
+  close();
+};
 </script>

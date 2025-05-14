@@ -1,11 +1,12 @@
-export const printPhone = (item:any) => {
-    const fname = item.FirstName;
-    const lname = item.LastName;
-    const labeltext = lname + ", \r\n" + fname
+export const printPhone = (item: any) => {
+  const fname = item.FirstName;
+  const lname = item.LastName;
+  const labeltext = lname + ', \r\n' + fname;
 
-    try {
-        // open label
-        var labelXml = '<?xml version="1.0" encoding="utf-8"?>\
+  try {
+    // open label
+    var labelXml =
+      '<?xml version="1.0" encoding="utf-8"?>\
 <DieCutLabel Version="8.0" Units="twips" MediaType="Default">\
 <PaperOrientation>Portrait</PaperOrientation>\
 <Id>Small30334</Id>\
@@ -32,8 +33,12 @@ export const printPhone = (item:any) => {
 <Verticalized>False</Verticalized>\
 <StyledText>\
     <Element>\
-        <String xml:space="preserve">' + lname + ',\
-' + fname + '</String>\
+        <String xml:space="preserve">' +
+      lname +
+      ',\
+' +
+      fname +
+      '</String>\
         <Attributes>\
             <Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
             <ForeColor Alpha="255" Red="0" Green="0" Blue="0" HueScale="100" />\
@@ -91,37 +96,40 @@ export const printPhone = (item:any) => {
 </ObjectInfo>\
 </DieCutLabel>';
 
-        var label = dymo.label.framework.openLabelXml(labelXml);
+    var label = dymo.label.framework.openLabelXml(labelXml);
 
-        // create label set to print data
-        var labelSetBuilder = new dymo.label.framework.LabelSetBuilder();
+    // create label set to print data
+    var labelSetBuilder = new dymo.label.framework.LabelSetBuilder();
 
-        // first label
-        var record = labelSetBuilder.addRecord();
-        record.setText("Text", labeltext);
+    // first label
+    var record = labelSetBuilder.addRecord();
+    record.setText('Text', labeltext);
 
-        // select printer to print on
-        // for simplicity sake just use the first LabelWriter printer
-        var printers = dymo.label.framework.getPrinters();
+    // select printer to print on
+    // for simplicity sake just use the first LabelWriter printer
+    var printers = dymo.label.framework.getPrinters();
 
-        if (printers.length == 0)
-            throw "No DYMO printers are installed. Install DYMO printers.";
+    if (printers.length == 0)
+      throw 'No DYMO printers are installed. Install DYMO printers.';
 
-        var printerName = "";
-        for (var i = 0; i < printers.length; ++i) {
-            var printer = printers[i];
-            if (printer.printerType == "LabelWriterPrinter" && printer.isConnected == true) {
-                printerName = printer.name;
-                break;
-            }
-        }
-
-        if (printerName == "")
-            throw "No LabelWriter printers found. Install LabelWriter printer";
-
-        // finally print the label with default print params
-        label.print(printerName, "", labelSetBuilder);
-    } catch (e:any) {
-        alert(e.message || e);
+    var printerName = '';
+    for (var i = 0; i < printers.length; ++i) {
+      var printer = printers[i];
+      if (
+        printer.printerType == 'LabelWriterPrinter' &&
+        printer.isConnected == true
+      ) {
+        printerName = printer.name;
+        break;
+      }
     }
-}
+
+    if (printerName == '')
+      throw 'No LabelWriter printers found. Install LabelWriter printer';
+
+    // finally print the label with default print params
+    label.print(printerName, '', labelSetBuilder);
+  } catch (e: any) {
+    alert(e.message || e);
+  }
+};
