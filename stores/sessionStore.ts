@@ -1,27 +1,28 @@
 import { defineStore } from 'pinia';
+import type { Session } from '~/types';
 
 export const useSessionStore = defineStore('session-store', {
   state: () => ({
     // list all results
-    sessions: [],
-    session: {},
+    sessions: [] as Session[],
+    session: {} as Session,
   }),
   actions: {
     // Get all results from DB
     async getAll() {
       try {
-        let data = await $fetch('/api/sessions');
+        let data = await $fetch<Session[]>('/api/sessions');
         this.sessions = data;
         return data;
       } catch (e: any) {
         console.log(e.message);
       }
     },
-    async getOne(sessionId) {
+    async getOne(sessionId: string) {
       try {
         console.log(sessionId);
         const sid = sessionId;
-        let data = await $fetch(`/api/sessions?_id=${sid}`);
+        let data = await $fetch<Session[]>(`/api/sessions?_id=${sid}`);
         this.session = data[0];
         return data[0];
       } catch (e: any) {
@@ -30,8 +31,11 @@ export const useSessionStore = defineStore('session-store', {
     },
     async getTodaysSessions() {
       try {
-        const today = new Date().toDateString();
-        let data = await $fetch(`/api/sessions?date=${today}`);
+        const today = new Intl.DateTimeFormat('en-US', {
+          dateStyle: 'full',
+          timeZone: 'America/Detroit',
+        }).format(new Date());
+        let data = await $fetch<Session[]>(`/api/sessions?date=${today}`);
         this.sessions = data;
         return data;
       } catch (e: any) {

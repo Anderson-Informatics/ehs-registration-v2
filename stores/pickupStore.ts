@@ -1,24 +1,33 @@
 import { defineStore } from 'pinia';
+import type { Pickup } from '~/types';
 
 export const usePickupStore = defineStore('pickup-store', {
   state: () => ({
-    pickups: [],
-    completed: [],
+    pickups: [] as Pickup[],
+    completed: [] as Pickup[],
   }),
   actions: {
     async getAll() {
       try {
-        let data = await $fetch('/api/pickups');
+        let data = await $fetch<Pickup[]>('/api/pickups');
         this.pickups = data;
         return data;
-      } catch (e) {
+      } catch (e: any) {
         console.log(e.message);
       }
     },
     async getTodaysPickups() {
-      const today = new Date().toLocaleDateString('en-US');
+      const today = new Date().toLocaleString('en-US', {
+        timeZone: 'America/Detroit',
+        month: 'numeric',
+        day: '2-digit',
+        year: 'numeric',
+      });
+      console.log(today);
       try {
-        let data = await $fetch(`/api/pickups?PickupDate=${today}&Departure=.`);
+        let data = await $fetch<Pickup[]>(
+          `/api/pickups?PickupDate=${today}&Departure=.`,
+        );
         this.pickups = data;
         return data;
       } catch (e: any) {
@@ -26,10 +35,18 @@ export const usePickupStore = defineStore('pickup-store', {
       }
     },
     async getTodaysCompletedPickups() {
-      const today = new Date().toLocaleDateString('en-US');
-      const pickup = new Date().toDateString();
+      const today = new Date().toLocaleString('en-US', {
+        timeZone: 'America/Detroit',
+        month: 'numeric',
+        day: '2-digit',
+        year: 'numeric',
+      });
+      const pickup = new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'full',
+        timeZone: 'America/Detroit',
+      }).format(new Date());
       try {
-        let data = await $fetch(
+        let data = await $fetch<Pickup[]>(
           `/api/pickups?PickupDate=${today}&Departure.Date=${pickup}`,
         );
         this.completed = data;

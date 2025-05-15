@@ -93,23 +93,24 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 const studentStore = useStudentStore();
 await useAsyncData('students', () => studentStore.getAll(), {});
 
-const search = ref('');
-const snackbar = ref(false);
-const snackerror = ref(false);
-const registrant = ref('');
-const text_success = ref(' has been successfully registered.');
-const text_error = ref(
+const search = ref<string>('');
+const snackbar = ref<boolean>(false);
+const snackerror = ref<boolean>(false);
+const registrant = ref<string>('');
+const text_success = ref<string>(' has been successfully registered.');
+const text_error = ref<string>(
   'Something went wrong, please refresh the page and try again.',
 );
 const timeout = 3000;
-const rePrint = ref(true);
+const rePrint = ref<boolean>(false);
 const headers = [
   {
     title: 'Name',
-    align: 'start',
+    align: 'start' as const,
     sortable: false,
     key: 'FullName',
   },
@@ -120,7 +121,7 @@ const headers = [
   { title: 'ID', key: 'SubmissionID' },
   { title: 'NewID', key: 'submissionIdUnique', align: ' d-none' },
   { title: 'Accommodations', key: 'Accommodations', align: ' d-none' },
-  { title: 'Registration Time', key: 'CheckIn.Time' },
+  { title: 'Registration Time', key: 'CheckIn.Time', align: 'start' as const },
   { title: 'Register', key: 'controls', sortable: false },
 ];
 
@@ -137,11 +138,18 @@ const checkIn = (item: any) => {
   }
   let now = new Date();
   let checkinData = {
-    SubmissionID: item.SubmissionID,
-    submissionIdUnique: item.submissionIdUnique,
+    ...item,
     CheckIn: {
-      Date: now.toDateString(),
-      Time: now.toLocaleTimeString(),
+      Date: new Intl.DateTimeFormat("en-US", {
+        dateStyle: "full",
+        timeZone: "America/Detroit",
+      }).format(now),
+      Time: now.toLocaleString('en-US', {
+        timeZone: 'America/Detroit',
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
+      }),
       Timestamp: now,
       Registered: true,
     },

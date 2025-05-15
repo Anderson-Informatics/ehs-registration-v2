@@ -114,6 +114,8 @@
 </template>
 
 <script setup lang="ts">
+import type { Session } from '@/types';
+
 const studentStore = useStudentStore();
 await useAsyncData(
   'registrations',
@@ -126,23 +128,28 @@ await useAsyncData('sessions', () => sessionStore.getTodaysSessions(), {});
 const search = ref('');
 const dialog = ref(false);
 const wings = ['A', 'B', 'C', 'D'];
-const headers = [
+const headers: Array<{
+  title: string;
+  align?: 'start' | 'end' | 'center';
+  sortable?: boolean;
+  key: string;
+}> = [
   {
     title: 'Proctor Name',
     align: 'start',
     sortable: false,
     key: 'proctor',
   },
-  { title: 'Room #', key: 'room' },
-  { title: 'Wing', key: 'wing' },
-  { title: 'Start Time', key: 'start' },
-  { title: 'End Time', key: 'end' },
-  { title: 'Proctor Phone', key: 'phone' },
+    { title: 'Room #', key: 'room', align: 'start' },
+    { title: 'Wing', key: 'wing', align: 'start' },
+    { title: 'Start Time', key: 'start', align: 'start' },
+    { title: 'End Time', key: 'end', align: 'start' },
+    { title: 'Proctor Phone', key: 'phone', align: 'start' },
 ];
 const headers2 = [
   {
     title: 'Name',
-    align: 'start',
+    align: 'start' as 'start',
     sortable: false,
     key: 'FullName',
   },
@@ -161,7 +168,10 @@ const newItem = ref({
   phone: '',
   room: '',
   wing: '',
-  date: new Date().toDateString(),
+  date: new Intl.DateTimeFormat("en-US", {
+    dateStyle: "full",
+    timeZone: "America/Detroit",
+  }).format(new Date()),
   start: '',
   end: '',
   students: [],
@@ -178,7 +188,10 @@ const close = () => {
         phone: '',
         room: '',
         wing: '',
-        date: new Date().toDateString(),
+        date: new Intl.DateTimeFormat("en-US", {
+          dateStyle: "full",
+          timeZone: "America/Detroit",
+        }).format(new Date()),
         start: '',
         end: '',
         students: [],
@@ -187,7 +200,7 @@ const close = () => {
   });
 };
 
-const save = (payload: Object) => {
+const save = (payload: Session) => {
   try {
     console.log(payload);
     // Need to add this endpoint and to sessionStore

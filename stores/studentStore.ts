@@ -21,7 +21,10 @@ export const useStudentStore = defineStore('student-store', {
       }
     },
     async getTodaysRegistrations() {
-      const today = new Date().toDateString();
+      const today = new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'full',
+        timeZone: 'America/Detroit',
+      }).format(new Date());
       try {
         let data = await $fetch(`/api/students?CheckIn.Date=${today}`);
         this.registrations = data;

@@ -5,7 +5,7 @@
     <h3>Date: {{ sessionStore.session.date }}</h3>
     Location: {{ sessionStore.session.room }} - {{ sessionStore.session.wing
     }}<br />
-    <div v-if="sessionStore.session.start.length > 0">
+    <div v-if="(sessionStore.session.start ?? '').length > 0">
       Start time: {{ sessionStore.session.start }}
     </div>
     <div v-else>
@@ -13,15 +13,13 @@
         Start Testing
       </v-btn>
     </div>
-    <div
-      v-if="
-        sessionStore.session.end.length > 0 &&
-        sessionStore.session.start.length > 0
-      "
-    >
+    <div v-if="
+      (sessionStore.session.end ?? '').length > 0 &&
+      (sessionStore.session.start ?? '').length > 0
+    ">
       End time: {{ sessionStore.session.end }}
     </div>
-    <div v-else-if="sessionStore.session.start.length > 0">
+    <div v-else-if="(sessionStore.session.start ?? '').length > 0">
       <v-btn color="purple" class="ma-4" @click="endSession()">
         End Testing
       </v-btn>
@@ -29,10 +27,7 @@
     <br />
 
     Student list:<br />
-    <div
-      v-for="student in sessionStore.session.students"
-      :key="student.SubmissionID"
-    >
+    <div v-for="student in sessionStore.session.students" :key="student.SubmissionID">
       {{ student.SubmissionID }} - {{ student.FirstName }}
       {{ student.LastName }}
     </div>
@@ -41,33 +36,22 @@
     <span></span>
     <br />
     <br />
-    <div v-if="sessionStore.session.end.length == 0">
+    <div v-if="(sessionStore.session.end ?? '').length == 0">
       <h2>Find and Add Students to your Session</h2>
-      <div v-if="sessionStore.session.start.length > 0">
+      <div v-if="(sessionStore.session.start ?? '').length > 0">
         <v-card>
+
           <v-card-title>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
+            <template v-slot>
+              <v-text-field v-model="search"
+                placeholder="Search (use Submission ID or least common name, NOT full name)"
+                prepend-inner-icon="mdi-magnify" variant="outlined" text hide-details single-line>
+              </v-text-field>
+            </template>
           </v-card-title>
-          <v-data-table
-            :headers="headers"
-            :items="studentStore.registrations"
-            :search="search"
-          >
+          <v-data-table :headers="headers" :items="studentStore.registrations" :search="search">
             <template v-slot:[`item.controls`]="props">
-              <v-btn
-                class="mx-2"
-                fab
-                dark
-                small
-                color="green"
-                @click="addStudent(props.item)"
-              >
+              <v-btn class="mx-2" fab dark small color="green" @click="addStudent(props.item)">
                 <v-icon dark>mdi-account-plus</v-icon>
               </v-btn>
             </template>
@@ -96,7 +80,28 @@ studentStore.registrations = studentStore.registrations.filter(
   (item) => item.TestSession === '',
 );
 const sessionStore = useSessionStore();
-await useAsyncData('session', () => sessionStore.getOne(route.params._id), {});
+
+
+// Define the type for the payload object
+interface StudentPayload {
+  sid: string;
+  student: StudentShort;
+  session: {
+    _id: string;
+    proctor: string;
+    room: string;
+    wing: string;
+    start: string;
+  };
+}
+// Ensure sessionStore.session.students is typed as an array of Student
+sessionStore.session.students = sessionStore.session.students || [] as StudentShort[];
+
+// Ensure sessionStore.session.students is typed as an array of Student
+import type { Session, StudentShort } from '@/types'; // Adjust the path to where the Session and StudentShort types are defined
+
+const session = sessionStore.session as Session;
+await useAsyncData('session', () => sessionStore.getOne(Array.isArray(route.params._id) ? route.params._id[0] : route.params._id), {});
 
 const routeId = route.params._id;
 
@@ -104,7 +109,7 @@ const search = ref('');
 const headers = [
   {
     text: 'Full Name',
-    align: 'start',
+    align: 'start' as 'start',
     filterable: false,
     value: 'FullName',
   },
@@ -117,27 +122,27 @@ const headers = [
 ];
 
 const addStudent = (item: any) => {
-  const payload = {
-    sid: routeId,
+  const payload: StudentPayload = {
+    sid: Array.isArray(routeId) ? routeId[0] : routeId,
     student: {
       SubmissionID: item.SubmissionID,
       FullName: item.FullName,
       FirstName: item.FirstName,
       LastName: item.LastName,
-      LinkedID: item._id.$oid,
     },
     session: {
       _id: sessionStore.session._id,
       proctor: sessionStore.session.proctor,
       room: sessionStore.session.room,
       wing: sessionStore.session.wing,
-      start: sessionStore.session.start,
+      start: sessionStore.session.start ?? '',
     },
   };
 
   try {
     console.log(payload);
     sessionStore.addStudent(payload); // This will update the db
+    sessionStore.session.students = sessionStore.session.students || []; // Ensure it's an array
     sessionStore.session.students.push(payload.student); // This will update the pinia store
     studentStore.registrations = studentStore.registrations.filter(
       (each) => each.SubmissionID !== item.SubmissionID,
@@ -149,8 +154,13 @@ const addStudent = (item: any) => {
 
 const startSession = () => {
   try {
-    const starttime = new Date().toLocaleTimeString();
-    sessionStore.startSession(routeId);
+    const starttime = new Date().toLocaleString('en-US', {
+      timeZone: 'America/Detroit',
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+    sessionStore.startSession(Array.isArray(routeId) ? routeId[0] : routeId);
     sessionStore.session.start = starttime;
   } catch (error) {
     console.log(error);
@@ -165,22 +175,37 @@ const endSession = () => {
   } else {
     return;
   }
-  let ids = sessionStore.session.students.map(
+  let ids = (sessionStore.session.students || []).map(
     ({ SubmissionID }) => SubmissionID,
   );
+  console.log('end session ids: ', ids);
   let now = new Date();
   const payload = {
     _id: routeId,
     start: sessionStore.session.start,
-    end: new Date().toLocaleTimeString(),
+    end: now.toLocaleString('en-US', {
+      timeZone: 'America/Detroit',
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+    }),
     CheckOut: {
-      Date: now.toDateString(),
-      Time: now.toLocaleTimeString(),
+      Date: new Intl.DateTimeFormat("en-US", {
+        dateStyle: "full",
+        timeZone: "America/Detroit",
+      }).format(now),
+      Time: now.toLocaleString('en-US', {
+        timeZone: 'America/Detroit',
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
+      }),
       Timestamp: now,
       CheckedOut: true,
     },
     students: ids,
   };
+  console.log('end session payload: ', payload);
   try {
     sessionStore.endSession(payload);
     sessionStore.session.end = payload.end;

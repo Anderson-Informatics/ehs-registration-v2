@@ -5,6 +5,7 @@ import StudentModel from '~~/server/models/student.model';
 export default defineEventHandler(async (event) => {
   // Get data from body
   const body = await readBody(event);
+  console.log(body);
   // Update a result
   await ConnectDB();
   try {
@@ -12,10 +13,12 @@ export default defineEventHandler(async (event) => {
       { _id: body.session._id },
       { $push: { students: body.student } },
     );
-    const result = StudentModel.updateOne(
+    console.log(res);
+    const result = await StudentModel.updateOne(
       { SubmissionID: body.student.SubmissionID },
       { TestSession: body.session },
     );
+    console.log(result);
     //return result
     return { message: 'Student Added to Session' };
   } catch (e: any) {

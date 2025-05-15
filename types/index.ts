@@ -9,9 +9,44 @@ export interface Student {
   LastName: string;
   IEP: string;
   Accommodations?: string;
-  CheckIn: Mixed;
-  CheckOut: Mixed;
-  TestSession: Mixed;
+  CheckIn:
+    | {
+        Date: string;
+        Time: string;
+        Timestamp: string;
+        Registered: boolean;
+      }
+    | '';
+  CheckOut:
+    | {
+        Date: string;
+        Time: string;
+        Timestamp: string;
+        CheckedOut: boolean;
+      }
+    | '';
+  TestSession:
+    | {
+        _id: string;
+        proctor: string;
+        phone: string;
+        room: string;
+        wing: string;
+        date: string;
+        start: string;
+        end: string;
+        duration: number;
+      }
+    | '';
+  LinkedID?: string;
+}
+
+// Define the type for the student object
+export interface StudentShort {
+  SubmissionID: any;
+  FullName: any;
+  FirstName: any;
+  LastName: any;
 }
 
 export interface Session {
@@ -23,12 +58,18 @@ export interface Session {
   date: string;
   start?: string;
   end?: string;
-  students: Array<Object>;
+  duration?: number;
+  students?: StudentShort[];
 }
 
 export interface Pickup {
   _id: ObjectId;
-  Departure: Mixed;
+  Departure?: {
+    Date: string;
+    Time: string;
+    Timestamp: string;
+    PickedUp: boolean;
+  };
   FirstName: String;
   LastName: String;
   PickupDate: String;

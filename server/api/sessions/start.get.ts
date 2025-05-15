@@ -5,7 +5,12 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   await ConnectDB();
   console.log(query);
-  const starttime = new Date().toLocaleTimeString();
+  const starttime = new Date().toLocaleString('en-US', {
+    timeZone: 'America/Detroit',
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+  });
   // Update a Session's Start time
   try {
     const res = await SessionModel.updateOne(
