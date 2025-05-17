@@ -11,7 +11,11 @@ export default defineEventHandler(async (event) => {
       { submissionIdUnique: body.submissionIdUnique },
       { CheckIn: body.CheckIn },
     );
-    return { message: 'Check In Successfully Completed' };
+    if (res.matchedCount === 1) {
+      return { message: 'Check In Successfully Completed' };
+    } else {
+      return { message: 'No Student Found' };
+    }
   } catch (e: any) {
     throw createError({
       message: e.message,

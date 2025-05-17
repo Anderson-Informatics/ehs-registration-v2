@@ -125,7 +125,7 @@ const headers = [
   { title: 'Register', key: 'controls', sortable: false },
 ];
 
-const checkIn = (item: any) => {
+const checkIn = async (item: any) => {
   if (item.CheckIn.Registered) {
     let reRegister = confirm(
       'This student appears to have already registered, are you sure would like to register this student?',
@@ -137,7 +137,7 @@ const checkIn = (item: any) => {
     }
   }
   let now = new Date();
-  let checkinData = {
+  let checkInData = {
     ...item,
     CheckIn: {
       Date: new Intl.DateTimeFormat("en-US", {
@@ -154,15 +154,17 @@ const checkIn = (item: any) => {
       Registered: true,
     },
   };
-  console.log(checkinData);
+  console.log(checkInData);
   try {
-    studentStore.checkInOne(checkinData);
+    const checkInRes = await studentStore.checkInOne(checkInData).then((res) => {
+      console.log('CheckIn Response: ', res);
+    });
     const student = studentStore.students.filter(
       (each: any) => each.submissionIdUnique === item.submissionIdUnique,
     )[0];
     console.log(student);
-    student.CheckIn = checkinData.CheckIn;
-    //this.$store.dispatch('roster/checkInOne', checkinData)
+    student.CheckIn = checkInData.CheckIn;
+    //this.$store.dispatch('roster/checkInOne', checkInData)
     studentStore.addLabel(item);
     registrant.value = item.FullName;
     snackbar.value = true;
