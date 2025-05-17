@@ -129,7 +129,7 @@ const logDeparture = (item: Pickup) => {
     )[0];
     console.log('student: ', student);
     console.log('departureData: ', departureData);
-    student.Departure = departureData.Departure; // Add the departure data to the student
+    //student.Departure = departureData.Departure; // Add the departure data to the student
     pickupStore.checkOut(departureData); // Run the checkOut via the API
     registrant.value = item.FirstName + ' ' + item.LastName;
     console.log(registrant.value + ' had been checked out and picked up.');
