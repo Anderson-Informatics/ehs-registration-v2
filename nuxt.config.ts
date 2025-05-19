@@ -36,7 +36,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }],
-      script: [{ src: 'dymo.connect.framework.full.js' }],
+      script: [
+        { src: 'dymo.connect.framework.full.js', crossorigin: 'anonymous' },
+      ],
       //script: [{ src: 'DYMO.Label.Framework.3.0.js' }],
     },
   },
