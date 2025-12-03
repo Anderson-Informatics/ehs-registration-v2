@@ -122,6 +122,13 @@ const headers = [
 ];
 
 const addStudent = (item: any) => {
+  let addConfirmation = confirm(
+    `Please confirm you want to add ${item.FullName} (Submission ID: ${item.SubmissionID}) to your testing session. Please double check that this student is in your classroom. This action cannot be undone.`,
+  );
+  if (addConfirmation) {
+  } else {
+    return;
+  }
   const payload: StudentPayload = {
     sid: Array.isArray(routeId) ? routeId[0] : routeId,
     student: {
