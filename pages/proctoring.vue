@@ -206,6 +206,8 @@ const save = (payload: Session) => {
     // Need to add this endpoint and to sessionStore
     sessionStore.addSession(payload);
     sessionStore.sessions.push(payload);
+    const router = useRouter();
+    router.push(`/session/${payload._id}`);
   } catch (error) {
     console.log(error);
   }
