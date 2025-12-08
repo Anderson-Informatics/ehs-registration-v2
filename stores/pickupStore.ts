@@ -20,7 +20,7 @@ export const usePickupStore = defineStore('pickup-store', {
       const today = new Date().toLocaleString('en-US', {
         timeZone: 'America/Detroit',
         month: 'numeric',
-        day: '2-digit',
+        day: 'numeric',
         year: 'numeric',
       });
       console.log(today);
@@ -38,7 +38,7 @@ export const usePickupStore = defineStore('pickup-store', {
       const today = new Date().toLocaleString('en-US', {
         timeZone: 'America/Detroit',
         month: 'numeric',
-        day: '2-digit',
+        day: 'numeric',
         year: 'numeric',
       });
       const pickup = new Intl.DateTimeFormat('en-US', {
