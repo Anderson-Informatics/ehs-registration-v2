@@ -24,6 +24,7 @@ export const usePickupStore = defineStore('pickup-store', {
         year: 'numeric',
       });
       console.log(today);
+      console.log(new Date());
       try {
         let data = await $fetch<Pickup[]>(
           `/api/pickups?PickupDate=${today}&Departure=.`,

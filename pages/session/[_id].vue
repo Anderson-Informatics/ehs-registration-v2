@@ -13,10 +13,12 @@
         Start Testing
       </v-btn>
     </div>
-    <div v-if="
-      (sessionStore.session.end ?? '').length > 0 &&
-      (sessionStore.session.start ?? '').length > 0
-    ">
+    <div
+      v-if="
+        (sessionStore.session.end ?? '').length > 0 &&
+        (sessionStore.session.start ?? '').length > 0
+      "
+    >
       End time: {{ sessionStore.session.end }}
     </div>
     <div v-else-if="(sessionStore.session.start ?? '').length > 0">
@@ -27,7 +29,10 @@
     <br />
 
     Student list:<br />
-    <div v-for="student in sessionStore.session.students" :key="student.SubmissionID">
+    <div
+      v-for="student in sessionStore.session.students"
+      :key="student.SubmissionID"
+    >
       {{ student.SubmissionID }} - {{ student.FirstName }}
       {{ student.LastName }}
     </div>
@@ -40,18 +45,34 @@
       <h2>Find and Add Students to your Session</h2>
       <div v-if="(sessionStore.session.start ?? '').length > 0">
         <v-card>
-
           <v-card-title>
             <template v-slot>
-              <v-text-field v-model="search"
+              <v-text-field
+                v-model="search"
                 placeholder="Search (use Submission ID or least common name, NOT full name)"
-                prepend-inner-icon="mdi-magnify" variant="outlined" text hide-details single-line>
+                prepend-inner-icon="mdi-magnify"
+                variant="outlined"
+                text
+                hide-details
+                single-line
+              >
               </v-text-field>
             </template>
           </v-card-title>
-          <v-data-table :headers="headers" :items="studentStore.registrations" :search="search">
+          <v-data-table
+            :headers="headers"
+            :items="studentStore.registrations"
+            :search="search"
+          >
             <template v-slot:[`item.controls`]="props">
-              <v-btn class="mx-2" fab dark small color="green" @click="addStudent(props.item)">
+              <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                color="green"
+                @click="addStudent(props.item)"
+              >
                 <v-icon dark>mdi-account-plus</v-icon>
               </v-btn>
             </template>
@@ -81,7 +102,6 @@ studentStore.registrations = studentStore.registrations.filter(
 );
 const sessionStore = useSessionStore();
 
-
 // Define the type for the payload object
 interface StudentPayload {
   sid: string;
@@ -95,13 +115,21 @@ interface StudentPayload {
   };
 }
 // Ensure sessionStore.session.students is typed as an array of Student
-sessionStore.session.students = sessionStore.session.students || [] as StudentShort[];
+sessionStore.session.students =
+  sessionStore.session.students || ([] as StudentShort[]);
 
 // Ensure sessionStore.session.students is typed as an array of Student
 import type { Session, StudentShort } from '@/types'; // Adjust the path to where the Session and StudentShort types are defined
 
 const session = sessionStore.session as Session;
-await useAsyncData('session', () => sessionStore.getOne(Array.isArray(route.params._id) ? route.params._id[0] : route.params._id), {});
+await useAsyncData(
+  'session',
+  () =>
+    sessionStore.getOne(
+      Array.isArray(route.params._id) ? route.params._id[0] : route.params._id,
+    ),
+  {},
+);
 
 const routeId = route.params._id;
 
@@ -197,9 +225,9 @@ const endSession = () => {
       second: '2-digit',
     }),
     CheckOut: {
-      Date: new Intl.DateTimeFormat("en-US", {
-        dateStyle: "full",
-        timeZone: "America/Detroit",
+      Date: new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'full',
+        timeZone: 'America/Detroit',
       }).format(now),
       Time: now.toLocaleString('en-US', {
         timeZone: 'America/Detroit',
@@ -220,4 +248,20 @@ const endSession = () => {
     console.log(error);
   }
 };
+
+// This will enable polling to refresh the student list every 10 seconds
+let polling: number | undefined = undefined;
+
+const refresh = () => {
+  console.log('Polling...');
+  studentStore.getTodaysRegistrations();
+};
+
+onMounted(() => {
+  polling = window.setInterval(refresh, 120000);
+});
+
+onUnmounted(() => {
+  window.clearInterval(polling);
+});
 </script>
