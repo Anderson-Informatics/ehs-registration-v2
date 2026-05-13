@@ -140,9 +140,9 @@ const checkIn = async (item: any) => {
   let checkInData = {
     ...item,
     CheckIn: {
-      Date: new Intl.DateTimeFormat("en-US", {
-        dateStyle: "full",
-        timeZone: "America/Detroit",
+      Date: new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'full',
+        timeZone: 'America/Detroit',
       }).format(now),
       Time: now.toLocaleString('en-US', {
         timeZone: 'America/Detroit',
@@ -156,9 +156,11 @@ const checkIn = async (item: any) => {
   };
   console.log(checkInData);
   try {
-    const checkInRes = await studentStore.checkInOne(checkInData).then((res) => {
-      console.log('CheckIn Response: ', res);
-    });
+    const checkInRes = await studentStore
+      .checkInOne(checkInData)
+      .then((res) => {
+        console.log('CheckIn Response: ', res);
+      });
     const student = studentStore.students.filter(
       (each: any) => each.submissionIdUnique === item.submissionIdUnique,
     )[0];
@@ -175,7 +177,7 @@ const checkIn = async (item: any) => {
 };
 
 const print = (item: any) => {
-  if (rePrint) {
+  if (rePrint.value) {
     printIep(item);
     printLabel(item);
     printPhone(item);

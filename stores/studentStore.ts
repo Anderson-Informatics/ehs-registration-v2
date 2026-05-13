@@ -80,14 +80,7 @@ export const useStudentStore = defineStore('student-store', {
       };
       try {
         // run the request. this function will call itself max. 5 times if the request fails
-        let response = request(5, callback);
-        //let data = await $fetch('/api/students/checkInOne', {
-        //  method: 'POST',
-        //  body: checkInData,
-        //}).then((res) => {
-        //  console.log(res);
-        //});
-        console.log(response);
+        await request(5, callback);
         return {
           completed: true,
           message: `Check In Successful for ${checkInData.SubmissionID}`,
