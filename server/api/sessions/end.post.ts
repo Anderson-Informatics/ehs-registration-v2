@@ -1,4 +1,3 @@
-import { ConnectDB } from '~/utils/db';
 import SessionModel from '~~/server/models/session.model';
 import StudentModel from '~~/server/models/student.model';
 import startGet from './start.get';
