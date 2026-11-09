@@ -13,7 +13,7 @@ export const useStudentStore = defineStore('student-store', {
     // Get all results from DB
     async getAll() {
       try {
-        let data = await $fetch('/api/students');
+        const data = await $fetch('/api/students');
         this.students = data;
         return data;
       } catch (e: any) {
@@ -26,7 +26,7 @@ export const useStudentStore = defineStore('student-store', {
         timeZone: 'America/Detroit',
       }).format(new Date());
       try {
-        let data = await $fetch(`/api/students?CheckIn.Date=${today}`);
+        const data = await $fetch(`/api/students?CheckIn.Date=${today}`);
         this.registrations = data;
         return data;
       } catch (e: any) {
@@ -35,7 +35,7 @@ export const useStudentStore = defineStore('student-store', {
     },
     async checkInOne(checkInData: Student) {
       // your callback gets executed automatically once the data is received
-      var callback = (data: any, error: any) => {
+      const callback = (data: any, error: any) => {
         // consume data
         if (error) {
           console.error(error);
@@ -91,7 +91,7 @@ export const useStudentStore = defineStore('student-store', {
     },
     async addLabel(student: any) {
       try {
-        let response = await $fetch('/api/submittable/add', {
+        const response = await $fetch('/api/submittable/add', {
           method: 'POST',
           body: { ...student },
         });
@@ -102,7 +102,7 @@ export const useStudentStore = defineStore('student-store', {
     },
     async getSummary() {
       try {
-        let data = await $fetch('/api/summary');
+        const data = await $fetch('/api/summary');
         this.summary = data;
         return data;
       } catch (e: any) {

@@ -6,13 +6,13 @@
       class="elevation-1"
       item-key="_id"
     >
-      <template v-slot:top>
+      <template #top>
         <v-toolbar flat>
           <v-toolbar-title>Today's Proctor Sessions</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
+          <v-divider class="mx-4" inset vertical />
+          <v-spacer />
           <v-dialog v-model="dialog" max-width="500px">
-            <template v-slot:activator="{ props: activatorProps }">
+            <template #activator="{ props: activatorProps }">
               <v-btn color="primary" dark class="mb-2" v-bind="activatorProps">
                 New Session
               </v-btn>
@@ -29,33 +29,30 @@
                       <v-text-field
                         v-model="newItem.proctor"
                         label="Proctor name"
-                      ></v-text-field>
+                      />
                     </v-col>
                     <v-col cols="12" sm="12" md="6">
                       <v-text-field
                         v-model="newItem.phone"
                         label="Proctor phone"
-                      ></v-text-field>
+                      />
                     </v-col>
                     <v-col cols="12" sm="12" md="6">
-                      <v-text-field
-                        v-model="newItem.room"
-                        label="Room #"
-                      ></v-text-field>
+                      <v-text-field v-model="newItem.room" label="Room #" />
                     </v-col>
                     <v-col cols="12" sm="12" md="6">
                       <v-select
                         v-model="newItem.wing"
                         label="Wing"
                         :items="wings"
-                      ></v-select>
+                      />
                     </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
 
               <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn color="blue darken-1" @click="close"> Cancel </v-btn>
                 <v-btn color="blue darken-1" @click="save(newItem)">
                   Save
@@ -65,7 +62,7 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.proctor`]="{ item }">
+      <template #[`item.proctor`]="{ item }">
         <nuxt-link :to="`/session/${item._id}`" prefetch>{{
           item.proctor
         }}</nuxt-link>
@@ -73,7 +70,7 @@
     </v-data-table>
     <div>
       <v-card title="Registered Students" flat>
-        <template v-slot:text>
+        <template #text>
           <v-text-field
             v-model="search"
             placeholder="Search (use least common name, NOT full name)"
@@ -82,8 +79,7 @@
             text
             hide-details
             single-line
-          >
-          </v-text-field>
+          />
         </template>
         <v-data-table
           item-key="_id.$oid"
@@ -91,7 +87,7 @@
           :items="studentStore.registrations"
           :search="search"
         >
-          <template v-slot:[`item.IEP`]="props">
+          <template #[`item.IEP`]="props">
             <div v-if="props.item.IEP === 'Yes'">
               <v-chip color="warning" dark>
                 <span class="iep">{{ props.item.IEP }}</span>
@@ -101,10 +97,10 @@
               <span class="iep">{{ props.item.IEP }}</span>
             </div>
           </template>
-          <template v-slot:[`item.FirstName`]="props">
+          <template #[`item.FirstName`]="props">
             <span class="first-name">{{ props.item.FirstName }}</span>
           </template>
-          <template v-slot:[`item.LastName`]="props">
+          <template #[`item.LastName`]="props">
             <span class="last-name">{{ props.item.LastName }}</span>
           </template>
         </v-data-table>
@@ -140,16 +136,16 @@ const headers: Array<{
     sortable: false,
     key: 'proctor',
   },
-    { title: 'Room #', key: 'room', align: 'start' },
-    { title: 'Wing', key: 'wing', align: 'start' },
-    { title: 'Start Time', key: 'start', align: 'start' },
-    { title: 'End Time', key: 'end', align: 'start' },
-    { title: 'Proctor Phone', key: 'phone', align: 'start' },
+  { title: 'Room #', key: 'room', align: 'start' },
+  { title: 'Wing', key: 'wing', align: 'start' },
+  { title: 'Start Time', key: 'start', align: 'start' },
+  { title: 'End Time', key: 'end', align: 'start' },
+  { title: 'Proctor Phone', key: 'phone', align: 'start' },
 ];
 const headers2 = [
   {
     title: 'Name',
-    align: 'start' as 'start',
+    align: 'start' as const,
     sortable: false,
     key: 'FullName',
   },
@@ -168,9 +164,9 @@ const newItem = ref({
   phone: '',
   room: '',
   wing: '',
-  date: new Intl.DateTimeFormat("en-US", {
-    dateStyle: "full",
-    timeZone: "America/Detroit",
+  date: new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'full',
+    timeZone: 'America/Detroit',
   }).format(new Date()),
   start: '',
   end: '',
@@ -188,9 +184,9 @@ const close = () => {
         phone: '',
         room: '',
         wing: '',
-        date: new Intl.DateTimeFormat("en-US", {
-          dateStyle: "full",
-          timeZone: "America/Detroit",
+        date: new Intl.DateTimeFormat('en-US', {
+          dateStyle: 'full',
+          timeZone: 'America/Detroit',
         }).format(new Date()),
         start: '',
         end: '',

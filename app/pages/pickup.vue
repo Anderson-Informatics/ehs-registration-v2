@@ -1,19 +1,38 @@
 <template>
   <v-container>
     <v-card title="Pick Up Requests">
-      <v-spacer></v-spacer>
-      <v-text-field v-model="search" placeholder="Search (use least common name, NOT full name)"
-        prepend-inner-icon="mdi-magnify" variant="outlined" text hide-details single-line>
-      </v-text-field>
-      <v-data-table :headers="headers" :items="pickupStore.pickups" :search="search"
-        :sort-by="[{ key: 'LastName', order: 'asc' }]" :sort-desc="[false]" :itemsPerPage="-1">
+      <v-spacer />
+      <v-text-field
+        v-model="search"
+        placeholder="Search (use least common name, NOT full name)"
+        prepend-inner-icon="mdi-magnify"
+        variant="outlined"
+        text
+        hide-details
+        single-line
+      />
+      <v-data-table
+        :headers="headers"
+        :items="pickupStore.pickups"
+        :search="search"
+        :sort-by="[{ key: 'LastName', order: 'asc' }]"
+        :sort-desc="[false]"
+        :items-per-page="-1"
+      >
         <!--
         <template v-slot:item.CheckIn.Registered="{ item }">
           <v-simple-checkbox v-model="item.CheckIn.Registered" disabled></v-simple-checkbox>
         </template>
 -->
-        <template v-slot:item.controls="{ item }">
-          <v-btn class="mx-2" fab dark small color="red" @click="logDeparture(item)">
+        <template #item.controls="{ item }">
+          <v-btn
+            class="mx-2"
+            fab
+            dark
+            small
+            color="red"
+            @click="logDeparture(item)"
+          >
             <v-icon dark>mdi-logout-variant</v-icon>
           </v-btn>
         </template>
@@ -21,17 +40,33 @@
     </v-card>
 
     <v-card title="Pick Up Completed">
-      <v-spacer></v-spacer>
-      <v-data-table :headers="headersComplete" :items="pickupStore.completed" :search="search"
-        :sort-by="[{ key: 'PickUp.Time', order: 'asc' }, { key: 'Departure.Time', order: 'desc' }]"
-        :sort-desc="[false, true]" :itemsPerPage="-1" item-key="QID">
+      <v-spacer />
+      <v-data-table
+        :headers="headersComplete"
+        :items="pickupStore.completed"
+        :search="search"
+        :sort-by="[
+          { key: 'PickUp.Time', order: 'asc' },
+          { key: 'Departure.Time', order: 'desc' },
+        ]"
+        :sort-desc="[false, true]"
+        :items-per-page="-1"
+        item-key="QID"
+      >
         <!--
         <template v-slot:item.CheckIn.Registered="{ item }">
           <v-simple-checkbox v-model="item.CheckIn.Registered" disabled></v-simple-checkbox>
         </template>
       -->
-        <template v-slot:item.controls="props">
-          <v-btn class="mx-2" fab dark small color="red" @click="logDeparture(props.item)">
+        <template #item.controls="props">
+          <v-btn
+            class="mx-2"
+            fab
+            dark
+            small
+            color="red"
+            @click="logDeparture(props.item)"
+          >
             <v-icon dark>mdi-logout-variant</v-icon>
           </v-btn>
         </template>
@@ -41,14 +76,14 @@
     <v-snackbar v-model="snackbar" :timeout="timeout" color="green" top>
       {{ registrant }}{{ text_success }}
 
-      <template v-slot:actions>
+      <template #actions>
         <v-btn color="white" @click="snackbar = false"> Close </v-btn>
       </template>
     </v-snackbar>
     <v-snackbar v-model="snackerror" :timeout="timeout" color="red" top>
       {{ text_error }}
 
-      <template v-slot:actions>
+      <template #actions>
         <v-btn color="white" @click="snackerror = false"> Close </v-btn>
       </template>
     </v-snackbar>
@@ -109,9 +144,9 @@ const logDeparture = (item: Pickup) => {
     FirstName: item.FirstName,
     LastName: item.LastName,
     Departure: {
-      Date: new Intl.DateTimeFormat("en-US", {
-        dateStyle: "full",
-        timeZone: "America/Detroit",
+      Date: new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'full',
+        timeZone: 'America/Detroit',
       }).format(now),
       Time: now.toLocaleString('en-US', {
         timeZone: 'America/Detroit',
@@ -124,16 +159,15 @@ const logDeparture = (item: Pickup) => {
     },
   };
   try {
-    const student = pickups.value.filter(
-      (each) => each.QID === item.QID,
-    )[0];
+    const student = pickups.value.filter((each) => each.QID === item.QID)[0];
     console.log('student: ', student);
     console.log('departureData: ', departureData);
     //student.Departure = departureData.Departure; // Add the departure data to the student
     pickupStore.checkOut(departureData); // Run the checkOut via the API
     registrant.value = item.FirstName + ' ' + item.LastName;
     console.log(registrant.value + ' had been checked out and picked up.');
-    text_success.value = registrant.value + ' had been checked out and picked up.';
+    text_success.value =
+      registrant.value + ' had been checked out and picked up.';
     snackbar.value = true;
   } catch (error: any) {
     console.log(error);

@@ -12,8 +12,7 @@
               :value="item.to"
               router
               :to="item.to"
-            >
-            </v-list-item>
+            />
           </v-list>
         </v-navigation-drawer>
         <v-main style="min-height: 100vh">

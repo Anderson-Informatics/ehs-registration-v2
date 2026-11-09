@@ -9,7 +9,7 @@ export const usePickupStore = defineStore('pickup-store', {
   actions: {
     async getAll() {
       try {
-        let data = await $fetch<Pickup[]>('/api/pickups');
+        const data = await $fetch<Pickup[]>('/api/pickups');
         this.pickups = data;
         return data;
       } catch (e: any) {
@@ -26,7 +26,7 @@ export const usePickupStore = defineStore('pickup-store', {
       console.log(today);
       console.log(new Date());
       try {
-        let data = await $fetch<Pickup[]>(
+        const data = await $fetch<Pickup[]>(
           `/api/pickups?PickupDate=${today}&Departure=.`,
         );
         this.pickups = data;
@@ -47,7 +47,7 @@ export const usePickupStore = defineStore('pickup-store', {
         timeZone: 'America/Detroit',
       }).format(new Date());
       try {
-        let data = await $fetch<Pickup[]>(
+        const data = await $fetch<Pickup[]>(
           `/api/pickups?PickupDate=${today}&Departure.Date=${pickup}`,
         );
         this.completed = data;
@@ -56,9 +56,9 @@ export const usePickupStore = defineStore('pickup-store', {
         console.log(e.message);
       }
     },
-    async checkOut(payload: Object) {
+    async checkOut(payload: object) {
       try {
-        let data = await $fetch('/api/pickups/checkout', {
+        const data = await $fetch('/api/pickups/checkout', {
           method: 'POST',
           body: payload,
         });

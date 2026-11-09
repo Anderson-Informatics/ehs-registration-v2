@@ -11,7 +11,7 @@ export const useSessionStore = defineStore('session-store', {
     // Get all results from DB
     async getAll() {
       try {
-        let data = await $fetch<Session[]>('/api/sessions');
+        const data = await $fetch<Session[]>('/api/sessions');
         this.sessions = data;
         return data;
       } catch (e: any) {
@@ -22,7 +22,7 @@ export const useSessionStore = defineStore('session-store', {
       try {
         console.log(sessionId);
         const sid = sessionId;
-        let data = await $fetch<Session[]>(`/api/sessions?_id=${sid}`);
+        const data = await $fetch<Session[]>(`/api/sessions?_id=${sid}`);
         this.session = data[0] ?? ({} as Session);
         return data[0];
       } catch (e: any) {
@@ -35,14 +35,14 @@ export const useSessionStore = defineStore('session-store', {
           dateStyle: 'full',
           timeZone: 'America/Detroit',
         }).format(new Date());
-        let data = await $fetch<Session[]>(`/api/sessions?date=${today}`);
+        const data = await $fetch<Session[]>(`/api/sessions?date=${today}`);
         this.sessions = data;
         return data;
       } catch (e: any) {
         console.log(e.message);
       }
     },
-    async addSession(payload: Object) {
+    async addSession(payload: object) {
       try {
         await $fetch('/api/sessions/add', {
           method: 'POST',
@@ -52,7 +52,7 @@ export const useSessionStore = defineStore('session-store', {
         console.log(e.message);
       }
     },
-    async startSession(sid: String) {
+    async startSession(sid: string) {
       // Get the runtimeconfig SUBMITTABLE API KEY
       const API_URL = useRuntimeConfig().API_URL;
       try {
@@ -62,9 +62,9 @@ export const useSessionStore = defineStore('session-store', {
         console.log(e.message);
       }
     },
-    async addStudent(payload: Object) {
+    async addStudent(payload: object) {
       try {
-        let data = await $fetch('/api/sessions/register', {
+        const data = await $fetch('/api/sessions/register', {
           method: 'POST',
           body: payload,
         });
@@ -73,9 +73,9 @@ export const useSessionStore = defineStore('session-store', {
         console.log(e.message);
       }
     },
-    async endSession(payload: Object) {
+    async endSession(payload: object) {
       try {
-        let data = await $fetch('/api/sessions/end', {
+        const data = await $fetch('/api/sessions/end', {
           method: 'POST',
           body: payload,
         });

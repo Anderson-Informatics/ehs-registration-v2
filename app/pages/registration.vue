@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card title="Registration" flat>
-      <template v-slot:text>
+      <template #text>
         <v-text-field
           v-model="search"
           placeholder="Search (use least common name, NOT full name)"
@@ -10,8 +10,7 @@
           text
           hide-details
           single-line
-        >
-        </v-text-field>
+        />
       </template>
 
       <v-data-table
@@ -19,13 +18,13 @@
         :items="studentStore.students"
         :search="search"
       >
-        <template v-slot:item.FirstName="{ item }">
+        <template #item.FirstName="{ item }">
           <span class="first-name">{{ item.FirstName }}</span>
         </template>
-        <template v-slot:item.LastName="{ item }">
+        <template #item.LastName="{ item }">
           <span class="last-name">{{ item.LastName }}</span>
         </template>
-        <template v-slot:item.IEP="{ item }">
+        <template #item.IEP="{ item }">
           <div v-if="item.IEP === 'Yes'">
             <v-chip color="warning" dark>
               <span class="iep">{{ item.IEP }}</span>
@@ -40,7 +39,7 @@
             <span class="iep">{{ item.IEP }}</span>
           </div>
         </template>
-        <template v-slot:item.SubmissionID="{ item }">
+        <template #item.SubmissionID="{ item }">
           <span class="submission-id">
             <a
               :href="
@@ -53,18 +52,18 @@
             </a>
           </span>
         </template>
-        <template v-slot:item.submissionIdUnique="{ item }">
+        <template #item.submissionIdUnique="{ item }">
           <span class="submission-id-unique">{{
             item.submissionIdUnique
           }}</span>
         </template>
-        <template v-slot:item.CheckIn.Date="{ item }">
+        <template #item.CheckIn.Date="{ item }">
           {{ formatCheckInDate(item) }}
         </template>
-        <template v-slot:item.CheckIn.Time="{ item }">
+        <template #item.CheckIn.Time="{ item }">
           {{ formatCheckInTime(item) }}
         </template>
-        <template v-slot:item.controls="{ item }">
+        <template #item.controls="{ item }">
           <v-btn
             class="mx-2"
             fab
@@ -84,14 +83,14 @@
     <v-snackbar v-model="snackbar" :timeout="timeout" color="green" top>
       {{ registrant }}{{ text_success }}
 
-      <template v-slot:actions>
+      <template #actions>
         <v-btn color="white" @click="snackbar = false"> Close </v-btn>
       </template>
     </v-snackbar>
     <v-snackbar v-model="snackerror" :timeout="timeout" color="red" top>
       {{ text_error }}
 
-      <template v-slot:actions>
+      <template #actions>
         <v-btn color="white" @click="snackerror = false"> Close </v-btn>
       </template>
     </v-snackbar>
@@ -154,7 +153,7 @@ const headers = [
 
 const checkIn = async (item: any) => {
   if (item.CheckIn.Registered) {
-    let reRegister = confirm(
+    const reRegister = confirm(
       'This student appears to have already registered, are you sure would like to register this student?',
     );
     if (reRegister) {
@@ -163,8 +162,8 @@ const checkIn = async (item: any) => {
       return;
     }
   }
-  let now = new Date();
-  let checkInData = {
+  const now = new Date();
+  const checkInData = {
     ...item,
     CheckIn: {
       Date: new Intl.DateTimeFormat('en-US', {
