@@ -12,7 +12,7 @@
 - Dev: `yarn dev`
 - Build: `yarn build` (Netlify output check: `NITRO_PRESET=netlify yarn build`)
 - Typecheck: `npx nuxi typecheck`
-- Lint: `yarn lint` (existing code has many pre-existing style lint errors)
+- Lint: `yarn lint` (should pass cleanly; DYMO printing code in `public/dymo*.js` and `app/composables/print*.ts` is excluded from ESLint and Prettier on purpose)
 
 ## API security
 
