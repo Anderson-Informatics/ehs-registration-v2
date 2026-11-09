@@ -23,7 +23,7 @@ export const useSessionStore = defineStore('session-store', {
         console.log(sessionId);
         const sid = sessionId;
         let data = await $fetch<Session[]>(`/api/sessions?_id=${sid}`);
-        this.session = data[0];
+        this.session = data[0] ?? ({} as Session);
         return data[0];
       } catch (e: any) {
         console.log(e.message);

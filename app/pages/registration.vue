@@ -125,8 +125,18 @@ const headers = [
   { title: 'Last', key: 'LastName' },
   //{ text: 'Session', key: 'Session' },
   { title: 'ID', key: 'SubmissionID' },
-  { title: 'NewID', key: 'submissionIdUnique', align: ' d-none' },
-  { title: 'Accommodations', key: 'Accommodations', align: ' d-none' },
+  {
+    title: 'NewID',
+    key: 'submissionIdUnique',
+    headerProps: { class: 'd-none' },
+    cellProps: { class: 'd-none' },
+  },
+  {
+    title: 'Accommodations',
+    key: 'Accommodations',
+    headerProps: { class: 'd-none' },
+    cellProps: { class: 'd-none' },
+  },
   {
     title: 'Registration Date',
     key: 'CheckIn.Date',

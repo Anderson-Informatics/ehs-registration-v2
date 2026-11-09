@@ -1,9 +1,6 @@
-import SessionModel from '~~/server/models/session.model';
 import StudentModel from '~~/server/models/student.model';
-import PickupModel from '~~/server/models/pickup.model';
 
-export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
+export default defineEventHandler(async () => {
   await ConnectDB();
   const agg = [
     {
@@ -61,12 +58,6 @@ export default defineEventHandler(async (event) => {
     },
   ];
   const registrations = await StudentModel.aggregate(agg);
-
-  const leftJoin = (objArr1, objArr2, key1, key2) =>
-    objArr1.map((anObj1) => ({
-      ...objArr2.find((anObj2) => anObj1[key1] === anObj2[key2]),
-      ...anObj1,
-    }));
 
   return registrations;
 });

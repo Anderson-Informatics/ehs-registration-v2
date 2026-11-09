@@ -63,7 +63,7 @@ const search = ref('');
 const headers = [
   {
     title: 'Name',
-    align: 'start',
+    align: 'start' as const,
     sortable: false,
     key: 'FullName',
     groupable: false,

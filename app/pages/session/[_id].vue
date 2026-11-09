@@ -122,16 +122,10 @@ sessionStore.session.students =
 import type { Session, StudentShort } from '@/types'; // Adjust the path to where the Session and StudentShort types are defined
 
 const session = sessionStore.session as Session;
-await useAsyncData(
-  'session',
-  () =>
-    sessionStore.getOne(
-      Array.isArray(route.params._id) ? route.params._id[0] : route.params._id,
-    ),
-  {},
-);
-
-const routeId = route.params._id;
+const routeId =
+  (Array.isArray(route.params._id) ? route.params._id[0] : route.params._id) ??
+  '';
+await useAsyncData('session', () => sessionStore.getOne(routeId), {});
 
 const search = ref('');
 const headers = [
@@ -158,7 +152,7 @@ const addStudent = (item: any) => {
     return;
   }
   const payload: StudentPayload = {
-    sid: Array.isArray(routeId) ? routeId[0] : routeId,
+    sid: routeId,
     student: {
       SubmissionID: item.SubmissionID,
       FullName: item.FullName,
@@ -195,7 +189,7 @@ const startSession = () => {
       minute: '2-digit',
       second: '2-digit',
     });
-    sessionStore.startSession(Array.isArray(routeId) ? routeId[0] : routeId);
+    sessionStore.startSession(routeId);
     sessionStore.session.start = starttime;
   } catch (error) {
     console.log(error);
