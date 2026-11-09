@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 // Ensure sessionStore.session.students is typed as an array of Student
-import type { Session, StudentShort } from '@/types';
+import type { StudentShort } from '@/types'; // Adjust the path to where the Session and StudentShort types are defined
 
 const route = useRoute();
 const studentStore = useStudentStore();
@@ -118,9 +118,8 @@ interface StudentPayload {
 }
 // Ensure sessionStore.session.students is typed as an array of Student
 sessionStore.session.students =
-  sessionStore.session.students || ([] as StudentShort[]); // Adjust the path to where the Session and StudentShort types are defined
+  sessionStore.session.students || ([] as StudentShort[]);
 
-const session = sessionStore.session as Session;
 const routeId =
   (Array.isArray(route.params._id) ? route.params._id[0] : route.params._id) ??
   '';
@@ -146,10 +145,7 @@ const addStudent = (item: any) => {
   const addConfirmation = confirm(
     `Please confirm you want to add ${item.FullName} (Submission ID: ${item.SubmissionID}) to your testing session. Please double check that this student is in your classroom. This action cannot be undone.`,
   );
-  if (addConfirmation) {
-  } else {
-    return;
-  }
+  if (!addConfirmation) return;
   const payload: StudentPayload = {
     sid: routeId,
     student: {
@@ -199,10 +195,7 @@ const endSession = () => {
   const endConfirmation = confirm(
     'This will check out all students and end the testing session. Please confirm that testing is complete.',
   );
-  if (endConfirmation) {
-  } else {
-    return;
-  }
+  if (!endConfirmation) return;
   const ids = (sessionStore.session.students || []).map(
     ({ SubmissionID }) => SubmissionID,
   );

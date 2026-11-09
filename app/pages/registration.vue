@@ -156,8 +156,7 @@ const checkIn = async (item: any) => {
     const reRegister = confirm(
       'This student appears to have already registered, are you sure would like to register this student?',
     );
-    if (reRegister) {
-    } else {
+    if (!reRegister) {
       rePrint.value = false;
       return;
     }
@@ -182,11 +181,9 @@ const checkIn = async (item: any) => {
   };
   console.log(checkInData);
   try {
-    const checkInRes = await studentStore
-      .checkInOne(checkInData)
-      .then((res) => {
-        console.log('CheckIn Response: ', res);
-      });
+    await studentStore.checkInOne(checkInData).then((res) => {
+      console.log('CheckIn Response: ', res);
+    });
     const student = studentStore.students.filter(
       (each: any) => each.submissionIdUnique === item.submissionIdUnique,
     )[0];

@@ -16,7 +16,11 @@
         column-count: 5;
       "
     >
-      <v-card v-for="pickup in pickupStore.pickups" class="mb-1">
+      <v-card
+        v-for="pickup in pickupStore.pickups"
+        :key="(pickup as Pickup)._id"
+        class="mb-1"
+      >
         <h3>
           {{ (pickup as Pickup).LastName }}, {{ (pickup as Pickup).FirstName }}
         </h3>

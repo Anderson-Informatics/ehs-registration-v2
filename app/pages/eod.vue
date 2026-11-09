@@ -1,7 +1,11 @@
 <template>
   <v-container>
     <h2>Summary Data</h2>
-    <v-card v-for="item in studentStore.summary" class="mb-5">
+    <v-card
+      v-for="item in studentStore.summary"
+      :key="item._id ?? 'unregistered'"
+      class="mb-5"
+    >
       <div v-if="item._id">
         <v-card-title>{{ item._id }}</v-card-title>
         <p>Registered: {{ item.Registered }}</p>

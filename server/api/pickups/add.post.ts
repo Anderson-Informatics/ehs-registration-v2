@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   await ConnectDB();
   if (query.secret == '2389dsfERGGGH4w32wgfkl') {
     try {
-      const res = await PickupModel.create({ ...body });
+      await PickupModel.create({ ...body });
       return { message: 'Pickup successfully requested' };
     } catch (e: any) {
       throw createError({

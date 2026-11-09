@@ -99,7 +99,6 @@ import type { Pickup } from '@/types';
 const pickupStore = usePickupStore();
 const pickups = ref<Pickup[]>(pickupStore.pickups);
 await useAsyncData('pickups', () => pickupStore.getTodaysPickups(), {});
-const completed = ref<Pickup[]>(pickupStore.completed);
 await useAsyncData(
   'completed',
   () => pickupStore.getTodaysCompletedPickups(),
@@ -115,7 +114,6 @@ const text_error = ref(
   'Something went wrong, please refresh the page and try again.',
 );
 const timeout = ref(3000);
-const checkdate = ref(Date());
 let polling: number | undefined = undefined;
 
 const headers = [

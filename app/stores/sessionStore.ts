@@ -53,8 +53,6 @@ export const useSessionStore = defineStore('session-store', {
       }
     },
     async startSession(sid: string) {
-      // Get the runtimeconfig SUBMITTABLE API KEY
-      const API_URL = useRuntimeConfig().API_URL;
       try {
         console.log(`Session store sid: ${sid}`);
         await $fetch(`/api/sessions/start?sid=${sid}`);

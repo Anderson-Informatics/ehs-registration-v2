@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   // Update a result
   await ConnectDB();
   try {
-    const res = await PickupModel.updateOne(
+    await PickupModel.updateOne(
       { QID: body.QID },
       { Departure: body.Departure },
     );
