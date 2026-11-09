@@ -37,6 +37,12 @@
             <span class="iep">{{ item.IEP }}</span>
           </div>
         </template>
+        <template v-slot:item.CheckIn.Date="{ item }">
+          {{ formatCheckInDate(item) }}
+        </template>
+        <template v-slot:item.CheckIn.Time="{ item }">
+          {{ formatCheckInTime(item) }}
+        </template>
         <!--
         <template v-slot:item.CheckIn.Registered="{ item }">
             <v-checkbox v-model="item.CheckIn.Registered" disabled></v-checkbox>
@@ -63,7 +69,18 @@ const headers = [
     groupable: false,
   },
   { title: 'IEP', key: 'IEP' },
-  { title: 'Registration Time', key: 'CheckIn.Time', groupable: false },
+  {
+    title: 'Registration Date',
+    key: 'CheckIn.Date',
+    groupable: false,
+    sortRaw: sortByCheckIn,
+  },
+  {
+    title: 'Registration Time',
+    key: 'CheckIn.Time',
+    groupable: false,
+    sortRaw: sortByCheckIn,
+  },
   { title: 'Test Start', key: 'TestSession.start', groupable: false },
   { title: 'Check Out Time', key: 'CheckOut.Time', groupable: false },
   //{ title: 'Registered', key: 'CheckIn.Registered' },

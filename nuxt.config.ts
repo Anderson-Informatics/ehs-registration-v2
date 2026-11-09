@@ -32,6 +32,8 @@ export default defineNuxtConfig({
     MONGO_URI: process.env.MONGO_URI,
     API_URL: process.env.API_URL,
     SUBMITTABLE_API_KEY: process.env.SUBMITTABLE_API_KEY,
+    API_KEY: process.env.API_KEY,
+    APP_SESSION_SECRET: process.env.APP_SESSION_SECRET,
   },
   app: {
     head: {

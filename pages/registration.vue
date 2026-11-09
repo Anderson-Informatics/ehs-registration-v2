@@ -58,6 +58,12 @@
             item.submissionIdUnique
           }}</span>
         </template>
+        <template v-slot:item.CheckIn.Date="{ item }">
+          {{ formatCheckInDate(item) }}
+        </template>
+        <template v-slot:item.CheckIn.Time="{ item }">
+          {{ formatCheckInTime(item) }}
+        </template>
         <template v-slot:item.controls="{ item }">
           <v-btn
             class="mx-2"
@@ -121,7 +127,18 @@ const headers = [
   { title: 'ID', key: 'SubmissionID' },
   { title: 'NewID', key: 'submissionIdUnique', align: ' d-none' },
   { title: 'Accommodations', key: 'Accommodations', align: ' d-none' },
-  { title: 'Registration Time', key: 'CheckIn.Time', align: 'start' as const },
+  {
+    title: 'Registration Date',
+    key: 'CheckIn.Date',
+    align: 'start' as const,
+    sortRaw: sortByCheckIn,
+  },
+  {
+    title: 'Registration Time',
+    key: 'CheckIn.Time',
+    align: 'start' as const,
+    sortRaw: sortByCheckIn,
+  },
   { title: 'Register', key: 'controls', sortable: false },
 ];
 
