@@ -11,22 +11,22 @@ export const useSessionStore = defineStore('session-store', {
     // Get all results from DB
     async getAll() {
       try {
-        let data = await $fetch<Session[]>('/api/sessions');
+        const data = await $fetch<Session[]>('/api/sessions');
         this.sessions = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getOne(sessionId: string) {
       try {
         console.log(sessionId);
         const sid = sessionId;
-        let data = await $fetch<Session[]>(`/api/sessions?_id=${sid}`);
-        this.session = data[0];
+        const data = await $fetch<Session[]>(`/api/sessions?_id=${sid}`);
+        this.session = data[0] ?? ({} as Session);
         return data[0];
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getTodaysSessions() {
@@ -35,53 +35,51 @@ export const useSessionStore = defineStore('session-store', {
           dateStyle: 'full',
           timeZone: 'America/Detroit',
         }).format(new Date());
-        let data = await $fetch<Session[]>(`/api/sessions?date=${today}`);
+        const data = await $fetch<Session[]>(`/api/sessions?date=${today}`);
         this.sessions = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
-    async addSession(payload: Object) {
+    async addSession(payload: object) {
       try {
         await $fetch('/api/sessions/add', {
           method: 'POST',
           body: payload,
         });
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
-    async startSession(sid: String) {
-      // Get the runtimeconfig SUBMITTABLE API KEY
-      const API_URL = useRuntimeConfig().API_URL;
+    async startSession(sid: string) {
       try {
         console.log(`Session store sid: ${sid}`);
         await $fetch(`/api/sessions/start?sid=${sid}`);
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
-    async addStudent(payload: Object) {
+    async addStudent(payload: object) {
       try {
-        let data = await $fetch('/api/sessions/register', {
+        const data = await $fetch('/api/sessions/register', {
           method: 'POST',
           body: payload,
         });
         console.log('Added student', data);
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
-    async endSession(payload: Object) {
+    async endSession(payload: object) {
       try {
-        let data = await $fetch('/api/sessions/end', {
+        const data = await $fetch('/api/sessions/end', {
           method: 'POST',
           body: payload,
         });
         console.log('Ended session', data);
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
   },

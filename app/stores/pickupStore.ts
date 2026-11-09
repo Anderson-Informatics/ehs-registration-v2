@@ -9,11 +9,11 @@ export const usePickupStore = defineStore('pickup-store', {
   actions: {
     async getAll() {
       try {
-        let data = await $fetch<Pickup[]>('/api/pickups');
+        const data = await $fetch<Pickup[]>('/api/pickups');
         this.pickups = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getTodaysPickups() {
@@ -26,13 +26,13 @@ export const usePickupStore = defineStore('pickup-store', {
       console.log(today);
       console.log(new Date());
       try {
-        let data = await $fetch<Pickup[]>(
+        const data = await $fetch<Pickup[]>(
           `/api/pickups?PickupDate=${today}&Departure=.`,
         );
         this.pickups = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getTodaysCompletedPickups() {
@@ -47,24 +47,24 @@ export const usePickupStore = defineStore('pickup-store', {
         timeZone: 'America/Detroit',
       }).format(new Date());
       try {
-        let data = await $fetch<Pickup[]>(
+        const data = await $fetch<Pickup[]>(
           `/api/pickups?PickupDate=${today}&Departure.Date=${pickup}`,
         );
         this.completed = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
-    async checkOut(payload: Object) {
+    async checkOut(payload: object) {
       try {
-        let data = await $fetch('/api/pickups/checkout', {
+        const data = await $fetch('/api/pickups/checkout', {
           method: 'POST',
           body: payload,
         });
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
   },

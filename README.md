@@ -2,6 +2,12 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## Requirements
+
+- Node.js 24 LTS (`>=24.15.0`, see `.nvmrc`). Netlify reads `.nvmrc` for both the build and the Functions runtime. Node 26 is not used yet because Netlify Functions run on AWS Lambda, where Node 26 is still a preview runtime.
+- Yarn 1 (`corepack enable`). The project uses `yarn.lock`, and `package.json` `resolutions` pin Vue core and framework build packages; use `yarn`, not npm/pnpm.
+- Nuxt 4 directory layout: client code lives in `app/`, server code in `server/` (shared DB helper in `server/utils/db.ts`).
+
 ## Setup
 
 Make sure to install dependencies:

@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   // Update a result
   try {
     const labelId = '1b266c74-9e43-4a05-b580-2e707d17b961';
-    const response = await $fetch(
+    await $fetch(
       `https://submittable-api.submittable.com/v4/submissions/${body.submissionIdUnique}/labels/${labelId}`,
       {
         method: 'PUT',
@@ -19,7 +19,8 @@ export default defineEventHandler(async (event) => {
       },
     );
     return { message: 'HSPT label properly applied' };
-  } catch (error: any) {
+  } catch (e) {
+    const error = e as { status?: number; data: { messages: string[] } };
     console.log(`${error.status} - ${error.data.messages[0]}`);
     return { message: `${error.status} - ${error.data.messages[0]}` };
   }

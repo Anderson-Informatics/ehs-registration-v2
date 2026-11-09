@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card title="Registration" flat>
-      <template v-slot:text>
+      <template #text>
         <v-text-field
           v-model="search"
           placeholder="Search (use least common name, NOT full name)"
@@ -10,8 +10,7 @@
           text
           hide-details
           single-line
-        >
-        </v-text-field>
+        />
       </template>
 
       <v-data-table
@@ -19,13 +18,13 @@
         :items="studentStore.students"
         :search="search"
       >
-        <template v-slot:item.FirstName="{ item }">
+        <template #item.FirstName="{ item }">
           <span class="first-name">{{ item.FirstName }}</span>
         </template>
-        <template v-slot:item.LastName="{ item }">
+        <template #item.LastName="{ item }">
           <span class="last-name">{{ item.LastName }}</span>
         </template>
-        <template v-slot:item.IEP="{ item }">
+        <template #item.IEP="{ item }">
           <div v-if="item.IEP === 'Yes'">
             <v-chip color="warning" dark>
               <span class="iep">{{ item.IEP }}</span>
@@ -40,7 +39,7 @@
             <span class="iep">{{ item.IEP }}</span>
           </div>
         </template>
-        <template v-slot:item.SubmissionID="{ item }">
+        <template #item.SubmissionID="{ item }">
           <span class="submission-id">
             <a
               :href="
@@ -53,18 +52,18 @@
             </a>
           </span>
         </template>
-        <template v-slot:item.submissionIdUnique="{ item }">
+        <template #item.submissionIdUnique="{ item }">
           <span class="submission-id-unique">{{
             item.submissionIdUnique
           }}</span>
         </template>
-        <template v-slot:item.CheckIn.Date="{ item }">
+        <template #item.CheckIn.Date="{ item }">
           {{ formatCheckInDate(item) }}
         </template>
-        <template v-slot:item.CheckIn.Time="{ item }">
+        <template #item.CheckIn.Time="{ item }">
           {{ formatCheckInTime(item) }}
         </template>
-        <template v-slot:item.controls="{ item }">
+        <template #item.controls="{ item }">
           <v-btn
             class="mx-2"
             fab
@@ -84,14 +83,14 @@
     <v-snackbar v-model="snackbar" :timeout="timeout" color="green" top>
       {{ registrant }}{{ text_success }}
 
-      <template v-slot:actions>
+      <template #actions>
         <v-btn color="white" @click="snackbar = false"> Close </v-btn>
       </template>
     </v-snackbar>
     <v-snackbar v-model="snackerror" :timeout="timeout" color="red" top>
       {{ text_error }}
 
-      <template v-slot:actions>
+      <template #actions>
         <v-btn color="white" @click="snackerror = false"> Close </v-btn>
       </template>
     </v-snackbar>
@@ -100,6 +99,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import type { Student } from '@/types';
 const studentStore = useStudentStore();
 await useAsyncData('students', () => studentStore.getAll(), {});
 
@@ -125,8 +125,18 @@ const headers = [
   { title: 'Last', key: 'LastName' },
   //{ text: 'Session', key: 'Session' },
   { title: 'ID', key: 'SubmissionID' },
-  { title: 'NewID', key: 'submissionIdUnique', align: ' d-none' },
-  { title: 'Accommodations', key: 'Accommodations', align: ' d-none' },
+  {
+    title: 'NewID',
+    key: 'submissionIdUnique',
+    headerProps: { class: 'd-none' },
+    cellProps: { class: 'd-none' },
+  },
+  {
+    title: 'Accommodations',
+    key: 'Accommodations',
+    headerProps: { class: 'd-none' },
+    cellProps: { class: 'd-none' },
+  },
   {
     title: 'Registration Date',
     key: 'CheckIn.Date',
@@ -142,19 +152,18 @@ const headers = [
   { title: 'Register', key: 'controls', sortable: false },
 ];
 
-const checkIn = async (item: any) => {
-  if (item.CheckIn.Registered) {
-    let reRegister = confirm(
+const checkIn = async (item: Student) => {
+  if (item.CheckIn && item.CheckIn.Registered) {
+    const reRegister = confirm(
       'This student appears to have already registered, are you sure would like to register this student?',
     );
-    if (reRegister) {
-    } else {
+    if (!reRegister) {
       rePrint.value = false;
       return;
     }
   }
-  let now = new Date();
-  let checkInData = {
+  const now = new Date();
+  const checkInData = {
     ...item,
     CheckIn: {
       Date: new Intl.DateTimeFormat('en-US', {
@@ -167,21 +176,20 @@ const checkIn = async (item: any) => {
         minute: '2-digit',
         second: '2-digit',
       }),
-      Timestamp: now,
+      Timestamp: now.toISOString(),
       Registered: true,
     },
   };
   console.log(checkInData);
   try {
-    const checkInRes = await studentStore
-      .checkInOne(checkInData)
-      .then((res) => {
-        console.log('CheckIn Response: ', res);
-      });
+    await studentStore.checkInOne(checkInData).then((res) => {
+      console.log('CheckIn Response: ', res);
+    });
     const student = studentStore.students.filter(
-      (each: any) => each.submissionIdUnique === item.submissionIdUnique,
+      (each) => each.submissionIdUnique === item.submissionIdUnique,
     )[0];
     console.log(student);
+    if (!student) throw new Error('Student not found in roster');
     student.CheckIn = checkInData.CheckIn;
     //this.$store.dispatch('roster/checkInOne', checkInData)
     studentStore.addLabel(item);
@@ -193,7 +201,7 @@ const checkIn = async (item: any) => {
   }
 };
 
-const print = (item: any) => {
+const print = (item: Student) => {
   if (rePrint.value) {
     printIep(item);
     printLabel(item);

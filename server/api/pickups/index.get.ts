@@ -1,4 +1,3 @@
-import { ConnectDB } from '~/utils/db';
 import PickupModel from '~~/server/models/pickup.model';
 
 export default defineEventHandler(async (event) => {

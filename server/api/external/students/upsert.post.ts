@@ -1,5 +1,4 @@
 import { mongo } from 'mongoose';
-import { ConnectDB } from '~/utils/db';
 import StudentModel from '~~/server/models/student.model';
 
 const FIELDS = [

@@ -1,4 +1,3 @@
-import { ConnectDB } from '~/utils/db';
 import PickupModel from '~~/server/models/pickup.model';
 
 export default defineEventHandler(async (event) => {
@@ -7,14 +6,14 @@ export default defineEventHandler(async (event) => {
   // Update a result
   await ConnectDB();
   try {
-    const res = await PickupModel.updateOne(
+    await PickupModel.updateOne(
       { QID: body.QID },
       { Departure: body.Departure },
     );
     return { message: 'Checkout successfully completed' };
-  } catch (e: any) {
+  } catch (e) {
     throw createError({
-      message: e.message,
+      message: (e as Error).message,
     });
   }
 });

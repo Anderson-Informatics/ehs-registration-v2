@@ -1,4 +1,3 @@
-import { ConnectDB } from '~/utils/db';
 import SessionModel from '~~/server/models/session.model';
 
 export default defineEventHandler(async (event) => {
@@ -7,11 +6,11 @@ export default defineEventHandler(async (event) => {
   // Update a result
   await ConnectDB();
   try {
-    const res = await SessionModel.create({ ...body });
+    await SessionModel.create({ ...body });
     return { message: 'Proctor Session Successfully Added' };
-  } catch (e: any) {
+  } catch (e) {
     throw createError({
-      message: e.message,
+      message: (e as Error).message,
     });
   }
 });

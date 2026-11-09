@@ -7,13 +7,13 @@
           <v-list density="compact" nav>
             <v-list-item
               v-for="item in items"
+              :key="item.to"
               :prepend-icon="item.icon"
               :title="item.title"
               :value="item.to"
               router
               :to="item.to"
-            >
-            </v-list-item>
+            />
           </v-list>
         </v-navigation-drawer>
         <v-main style="min-height: 100vh">

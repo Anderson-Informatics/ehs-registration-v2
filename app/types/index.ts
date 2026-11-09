@@ -1,7 +1,5 @@
-import type { ObjectId, Mixed } from 'mongoose';
-
 export interface Student {
-  _id: ObjectId;
+  _id: string;
   SubmissionID: string;
   submissionIdUnique: string;
   FullName: string;
@@ -43,10 +41,16 @@ export interface Student {
 
 // Define the type for the student object
 export interface StudentShort {
-  SubmissionID: any;
-  FullName: any;
-  FirstName: any;
-  LastName: any;
+  SubmissionID: string;
+  FullName: string;
+  FirstName: string;
+  LastName: string;
+}
+
+export interface SummaryRow {
+  _id: string | null;
+  Registered: number;
+  Completed: number;
 }
 
 export interface Session {
@@ -63,19 +67,19 @@ export interface Session {
 }
 
 export interface Pickup {
-  _id: ObjectId;
+  _id: string;
   Departure?: {
     Date: string;
     Time: string;
     Timestamp: string;
     PickedUp: boolean;
   };
-  FirstName: String;
-  LastName: String;
-  PickupDate: String;
-  PickupPerson: String;
-  PickupPhone: String;
-  PickupRelation: String;
-  PickupTime: String;
-  QID: String;
+  FirstName: string;
+  LastName: string;
+  PickupDate: string;
+  PickupPerson: string;
+  PickupPhone: string;
+  PickupRelation: string;
+  PickupTime: string;
+  QID: string;
 }

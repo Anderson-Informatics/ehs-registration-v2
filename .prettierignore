@@ -1,0 +1,5 @@
+# DYMO label printing code is kept as-is
+public/dymo*.js
+app/composables/print*.ts
+
+.devin/

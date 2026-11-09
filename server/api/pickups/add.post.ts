@@ -1,4 +1,3 @@
-import { ConnectDB } from '~/utils/db';
 import PickupModel from '~~/server/models/pickup.model';
 
 export default defineEventHandler(async (event) => {
@@ -9,11 +8,11 @@ export default defineEventHandler(async (event) => {
   await ConnectDB();
   if (query.secret == '2389dsfERGGGH4w32wgfkl') {
     try {
-      const res = await PickupModel.create({ ...body });
+      await PickupModel.create({ ...body });
       return { message: 'Pickup successfully requested' };
-    } catch (e: any) {
+    } catch (e) {
       throw createError({
-        message: e.message,
+        message: (e as Error).message,
       });
     }
   } else {

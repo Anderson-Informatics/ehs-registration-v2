@@ -1,4 +1,3 @@
-import { ConnectDB } from '~/utils/db';
 import StudentModel from '~~/server/models/student.model';
 
 export default defineEventHandler(async (event) => {
@@ -16,9 +15,9 @@ export default defineEventHandler(async (event) => {
     } else {
       return { message: 'No Student Found' };
     }
-  } catch (e: any) {
+  } catch (e) {
     throw createError({
-      message: e.message,
+      message: (e as Error).message,
     });
   }
 });

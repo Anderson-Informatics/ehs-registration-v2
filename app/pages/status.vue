@@ -5,7 +5,7 @@
       <v-spacer></v-spacer>
       {{ todaysregistrations }} Registered Today
        -->
-      <template v-slot:text>
+      <template #text>
         <v-text-field
           v-model="search"
           placeholder="Search (use least common name, NOT full name)"
@@ -14,15 +14,14 @@
           text
           hide-details
           single-line
-        >
-        </v-text-field>
+        />
       </template>
       <v-data-table
         :headers="headers"
         :items="studentStore.students"
         :search="search"
       >
-        <template v-slot:item.IEP="{ item }">
+        <template #item.IEP="{ item }">
           <div v-if="item.IEP === 'Yes'">
             <v-chip color="warning" dark>
               <span class="iep">{{ item.IEP }}</span>
@@ -37,10 +36,10 @@
             <span class="iep">{{ item.IEP }}</span>
           </div>
         </template>
-        <template v-slot:item.CheckIn.Date="{ item }">
+        <template #item.CheckIn.Date="{ item }">
           {{ formatCheckInDate(item) }}
         </template>
-        <template v-slot:item.CheckIn.Time="{ item }">
+        <template #item.CheckIn.Time="{ item }">
           {{ formatCheckInTime(item) }}
         </template>
         <!--
@@ -63,7 +62,7 @@ const search = ref('');
 const headers = [
   {
     title: 'Name',
-    align: 'start',
+    align: 'start' as const,
     sortable: false,
     key: 'FullName',
     groupable: false,

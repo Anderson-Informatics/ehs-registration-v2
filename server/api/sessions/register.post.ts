@@ -1,4 +1,3 @@
-import { ConnectDB } from '~/utils/db';
 import SessionModel from '~~/server/models/session.model';
 import StudentModel from '~~/server/models/student.model';
 
@@ -21,9 +20,9 @@ export default defineEventHandler(async (event) => {
     console.log(result);
     //return result
     return { message: 'Student Added to Session' };
-  } catch (e: any) {
+  } catch (e) {
     throw createError({
-      message: e.message,
+      message: (e as Error).message,
     });
   }
 });

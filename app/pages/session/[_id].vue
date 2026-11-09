@@ -37,8 +37,8 @@
       {{ student.LastName }}
     </div>
 
-    <span></span>
-    <span></span>
+    <span />
+    <span />
     <br />
     <br />
     <div v-if="(sessionStore.session.end ?? '').length == 0">
@@ -46,7 +46,7 @@
       <div v-if="(sessionStore.session.start ?? '').length > 0">
         <v-card>
           <v-card-title>
-            <template v-slot>
+            <template #default>
               <v-text-field
                 v-model="search"
                 placeholder="Search (use Submission ID or least common name, NOT full name)"
@@ -55,8 +55,7 @@
                 text
                 hide-details
                 single-line
-              >
-              </v-text-field>
+              />
             </template>
           </v-card-title>
           <v-data-table
@@ -64,7 +63,7 @@
             :items="studentStore.registrations"
             :search="search"
           >
-            <template v-slot:[`item.controls`]="props">
+            <template #[`item.controls`]="props">
               <v-btn
                 class="mx-2"
                 fab
@@ -90,6 +89,9 @@
 </template>
 
 <script setup lang="ts">
+// Ensure sessionStore.session.students is typed as an array of Student
+import type { Student, StudentShort } from '@/types'; // Adjust the path to where the Session and StudentShort types are defined
+
 const route = useRoute();
 const studentStore = useStudentStore();
 await useAsyncData(
@@ -118,26 +120,16 @@ interface StudentPayload {
 sessionStore.session.students =
   sessionStore.session.students || ([] as StudentShort[]);
 
-// Ensure sessionStore.session.students is typed as an array of Student
-import type { Session, StudentShort } from '@/types'; // Adjust the path to where the Session and StudentShort types are defined
-
-const session = sessionStore.session as Session;
-await useAsyncData(
-  'session',
-  () =>
-    sessionStore.getOne(
-      Array.isArray(route.params._id) ? route.params._id[0] : route.params._id,
-    ),
-  {},
-);
-
-const routeId = route.params._id;
+const routeId =
+  (Array.isArray(route.params._id) ? route.params._id[0] : route.params._id) ??
+  '';
+await useAsyncData('session', () => sessionStore.getOne(routeId), {});
 
 const search = ref('');
 const headers = [
   {
     text: 'Full Name',
-    align: 'start' as 'start',
+    align: 'start' as const,
     filterable: false,
     value: 'FullName',
   },
@@ -149,16 +141,13 @@ const headers = [
   { text: 'Add', value: 'controls', sortable: false },
 ];
 
-const addStudent = (item: any) => {
-  let addConfirmation = confirm(
+const addStudent = (item: Student) => {
+  const addConfirmation = confirm(
     `Please confirm you want to add ${item.FullName} (Submission ID: ${item.SubmissionID}) to your testing session. Please double check that this student is in your classroom. This action cannot be undone.`,
   );
-  if (addConfirmation) {
-  } else {
-    return;
-  }
+  if (!addConfirmation) return;
   const payload: StudentPayload = {
-    sid: Array.isArray(routeId) ? routeId[0] : routeId,
+    sid: routeId,
     student: {
       SubmissionID: item.SubmissionID,
       FullName: item.FullName,
@@ -195,7 +184,7 @@ const startSession = () => {
       minute: '2-digit',
       second: '2-digit',
     });
-    sessionStore.startSession(Array.isArray(routeId) ? routeId[0] : routeId);
+    sessionStore.startSession(routeId);
     sessionStore.session.start = starttime;
   } catch (error) {
     console.log(error);
@@ -203,18 +192,15 @@ const startSession = () => {
 };
 
 const endSession = () => {
-  let endConfirmation = confirm(
+  const endConfirmation = confirm(
     'This will check out all students and end the testing session. Please confirm that testing is complete.',
   );
-  if (endConfirmation) {
-  } else {
-    return;
-  }
-  let ids = (sessionStore.session.students || []).map(
+  if (!endConfirmation) return;
+  const ids = (sessionStore.session.students || []).map(
     ({ SubmissionID }) => SubmissionID,
   );
   console.log('end session ids: ', ids);
-  let now = new Date();
+  const now = new Date();
   const payload = {
     _id: routeId,
     start: sessionStore.session.start,

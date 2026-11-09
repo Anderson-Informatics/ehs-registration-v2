@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Current Date and Time</h1>
-    <p id="currentDateTime"></p>
-    <p id="formattedDateTime"></p>
+    <p id="currentDateTime" />
+    <p id="formattedDateTime" />
     {{ serverTime }}
     <button @click="updateDateTime">Update Date and Time</button>
   </div>
@@ -20,9 +20,9 @@ const updateDateTime = () => {
     second: '2-digit',
   });
   const currentDateTime = new Date();
-  const formattedDateTime = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "short",
-    timeZone: "America/Detroit",
+  const formattedDateTime = new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'short',
+    timeZone: 'America/Detroit',
   }).format(new Date());
   const usDate = new Date().toLocaleString('en-US', {
     timeZone: 'America/Detroit',
