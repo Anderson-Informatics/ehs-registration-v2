@@ -15,9 +15,9 @@ export default defineEventHandler(async (event) => {
     } else {
       return { message: 'No Student Found' };
     }
-  } catch (e: any) {
+  } catch (e) {
     throw createError({
-      message: e.message,
+      message: (e as Error).message,
     });
   }
 });

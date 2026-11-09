@@ -19,9 +19,9 @@ export default defineEventHandler(async (event) => {
     console.log(res);
     return res;
     //return { message: "Testing Session Successfully Started" };
-  } catch (e: any) {
+  } catch (e) {
     throw createError({
-      message: e.message,
+      message: (e as Error).message,
     });
   }
 });

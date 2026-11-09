@@ -99,6 +99,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import type { Student } from '@/types';
 const studentStore = useStudentStore();
 await useAsyncData('students', () => studentStore.getAll(), {});
 
@@ -151,8 +152,8 @@ const headers = [
   { title: 'Register', key: 'controls', sortable: false },
 ];
 
-const checkIn = async (item: any) => {
-  if (item.CheckIn.Registered) {
+const checkIn = async (item: Student) => {
+  if (item.CheckIn && item.CheckIn.Registered) {
     const reRegister = confirm(
       'This student appears to have already registered, are you sure would like to register this student?',
     );
@@ -175,7 +176,7 @@ const checkIn = async (item: any) => {
         minute: '2-digit',
         second: '2-digit',
       }),
-      Timestamp: now,
+      Timestamp: now.toISOString(),
       Registered: true,
     },
   };
@@ -185,9 +186,10 @@ const checkIn = async (item: any) => {
       console.log('CheckIn Response: ', res);
     });
     const student = studentStore.students.filter(
-      (each: any) => each.submissionIdUnique === item.submissionIdUnique,
+      (each) => each.submissionIdUnique === item.submissionIdUnique,
     )[0];
     console.log(student);
+    if (!student) throw new Error('Student not found in roster');
     student.CheckIn = checkInData.CheckIn;
     //this.$store.dispatch('roster/checkInOne', checkInData)
     studentStore.addLabel(item);
@@ -199,7 +201,7 @@ const checkIn = async (item: any) => {
   }
 };
 
-const print = (item: any) => {
+const print = (item: Student) => {
   if (rePrint.value) {
     printIep(item);
     printLabel(item);

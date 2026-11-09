@@ -12,8 +12,8 @@ export const usePickupStore = defineStore('pickup-store', {
         const data = await $fetch<Pickup[]>('/api/pickups');
         this.pickups = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getTodaysPickups() {
@@ -31,8 +31,8 @@ export const usePickupStore = defineStore('pickup-store', {
         );
         this.pickups = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getTodaysCompletedPickups() {
@@ -52,8 +52,8 @@ export const usePickupStore = defineStore('pickup-store', {
         );
         this.completed = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async checkOut(payload: object) {
@@ -63,8 +63,8 @@ export const usePickupStore = defineStore('pickup-store', {
           body: payload,
         });
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
   },

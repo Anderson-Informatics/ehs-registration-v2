@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 // Ensure sessionStore.session.students is typed as an array of Student
-import type { StudentShort } from '@/types'; // Adjust the path to where the Session and StudentShort types are defined
+import type { Student, StudentShort } from '@/types'; // Adjust the path to where the Session and StudentShort types are defined
 
 const route = useRoute();
 const studentStore = useStudentStore();
@@ -141,7 +141,7 @@ const headers = [
   { text: 'Add', value: 'controls', sortable: false },
 ];
 
-const addStudent = (item: any) => {
+const addStudent = (item: Student) => {
   const addConfirmation = confirm(
     `Please confirm you want to add ${item.FullName} (Submission ID: ${item.SubmissionID}) to your testing session. Please double check that this student is in your classroom. This action cannot be undone.`,
   );

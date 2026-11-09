@@ -41,10 +41,16 @@ export interface Student {
 
 // Define the type for the student object
 export interface StudentShort {
-  SubmissionID: any;
-  FullName: any;
-  FirstName: any;
-  LastName: any;
+  SubmissionID: string;
+  FullName: string;
+  FirstName: string;
+  LastName: string;
+}
+
+export interface SummaryRow {
+  _id: string | null;
+  Registered: number;
+  Completed: number;
 }
 
 export interface Session {

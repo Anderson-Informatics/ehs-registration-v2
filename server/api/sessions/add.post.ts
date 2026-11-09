@@ -8,9 +8,9 @@ export default defineEventHandler(async (event) => {
   try {
     await SessionModel.create({ ...body });
     return { message: 'Proctor Session Successfully Added' };
-  } catch (e: any) {
+  } catch (e) {
     throw createError({
-      message: e.message,
+      message: (e as Error).message,
     });
   }
 });

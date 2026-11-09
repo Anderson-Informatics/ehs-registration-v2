@@ -1,23 +1,23 @@
 import { defineStore } from 'pinia';
-import type { Student } from '~/types';
+import type { Student, SummaryRow } from '~/types';
 
 export const useStudentStore = defineStore('student-store', {
   state: () => ({
     // list all results
-    students: [] as any[],
+    students: [] as Student[],
     student: {},
-    registrations: [] as any[],
-    summary: [] as any[],
+    registrations: [] as Student[],
+    summary: [] as SummaryRow[],
   }),
   actions: {
     // Get all results from DB
     async getAll() {
       try {
-        const data = await $fetch('/api/students');
+        const data = await $fetch<Student[]>('/api/students');
         this.students = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getTodaysRegistrations() {
@@ -26,16 +26,18 @@ export const useStudentStore = defineStore('student-store', {
         timeZone: 'America/Detroit',
       }).format(new Date());
       try {
-        const data = await $fetch(`/api/students?CheckIn.Date=${today}`);
+        const data = await $fetch<Student[]>(
+          `/api/students?CheckIn.Date=${today}`,
+        );
         this.registrations = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async checkInOne(checkInData: Student) {
       // your callback gets executed automatically once the data is received
-      const callback = (data: any, error: any) => {
+      const callback = (data: unknown, error?: unknown) => {
         // consume data
         if (error) {
           console.error(error);
@@ -45,7 +47,10 @@ export const useStudentStore = defineStore('student-store', {
         return data;
       };
 
-      const request = async (retries: number, callback: any) => {
+      const request = async (
+        retries: number,
+        callback: (data: unknown, error?: unknown) => unknown,
+      ) => {
         await $fetch('/api/students/checkInOne', {
           method: 'POST',
           body: checkInData,
@@ -85,28 +90,28 @@ export const useStudentStore = defineStore('student-store', {
           completed: true,
           message: `Check In Successful for ${checkInData.SubmissionID}`,
         };
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
-    async addLabel(student: any) {
+    async addLabel(student: Student) {
       try {
         const response = await $fetch('/api/submittable/add', {
           method: 'POST',
           body: { ...student },
         });
         console.log(response);
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getSummary() {
       try {
-        const data = await $fetch('/api/summary');
+        const data = await $fetch<SummaryRow[]>('/api/summary');
         this.summary = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
   },

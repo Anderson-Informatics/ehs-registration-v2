@@ -11,9 +11,9 @@ export default defineEventHandler(async (event) => {
       { Departure: body.Departure },
     );
     return { message: 'Checkout successfully completed' };
-  } catch (e: any) {
+  } catch (e) {
     throw createError({
-      message: e.message,
+      message: (e as Error).message,
     });
   }
 });

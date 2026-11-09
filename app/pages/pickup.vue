@@ -167,7 +167,7 @@ const logDeparture = (item: Pickup) => {
     text_success.value =
       registrant.value + ' had been checked out and picked up.';
     snackbar.value = true;
-  } catch (error: any) {
+  } catch (error) {
     console.log(error);
     return (snackerror.value = true);
   }

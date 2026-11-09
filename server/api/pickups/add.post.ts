@@ -10,9 +10,9 @@ export default defineEventHandler(async (event) => {
     try {
       await PickupModel.create({ ...body });
       return { message: 'Pickup successfully requested' };
-    } catch (e: any) {
+    } catch (e) {
       throw createError({
-        message: e.message,
+        message: (e as Error).message,
       });
     }
   } else {

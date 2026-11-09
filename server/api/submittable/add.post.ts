@@ -19,7 +19,8 @@ export default defineEventHandler(async (event) => {
       },
     );
     return { message: 'HSPT label properly applied' };
-  } catch (error: any) {
+  } catch (e) {
+    const error = e as { status?: number; data: { messages: string[] } };
     console.log(`${error.status} - ${error.data.messages[0]}`);
     return { message: `${error.status} - ${error.data.messages[0]}` };
   }

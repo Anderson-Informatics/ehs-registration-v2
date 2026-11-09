@@ -14,8 +14,8 @@ export const useSessionStore = defineStore('session-store', {
         const data = await $fetch<Session[]>('/api/sessions');
         this.sessions = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getOne(sessionId: string) {
@@ -25,8 +25,8 @@ export const useSessionStore = defineStore('session-store', {
         const data = await $fetch<Session[]>(`/api/sessions?_id=${sid}`);
         this.session = data[0] ?? ({} as Session);
         return data[0];
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async getTodaysSessions() {
@@ -38,8 +38,8 @@ export const useSessionStore = defineStore('session-store', {
         const data = await $fetch<Session[]>(`/api/sessions?date=${today}`);
         this.sessions = data;
         return data;
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async addSession(payload: object) {
@@ -48,16 +48,16 @@ export const useSessionStore = defineStore('session-store', {
           method: 'POST',
           body: payload,
         });
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async startSession(sid: string) {
       try {
         console.log(`Session store sid: ${sid}`);
         await $fetch(`/api/sessions/start?sid=${sid}`);
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async addStudent(payload: object) {
@@ -67,8 +67,8 @@ export const useSessionStore = defineStore('session-store', {
           body: payload,
         });
         console.log('Added student', data);
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
     async endSession(payload: object) {
@@ -78,8 +78,8 @@ export const useSessionStore = defineStore('session-store', {
           body: payload,
         });
         console.log('Ended session', data);
-      } catch (e: any) {
-        console.log(e.message);
+      } catch (e) {
+        console.log((e as Error).message);
       }
     },
   },
