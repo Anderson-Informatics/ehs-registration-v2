@@ -112,7 +112,7 @@ const text_error = ref<string>(
   'Something went wrong, please refresh the page and try again.',
 );
 const timeout = 3000;
-const rePrint = ref<boolean>(false);
+const rePrint = ref<boolean>(true);
 const headers = [
   {
     title: 'Name',
